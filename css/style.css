@@ -1,0 +1,21 @@
+textarea {
+  resize: none;
+}
+
+#firstWords, #firstUnmatched {
+  background-color: #0E1818;
+}
+
+#firstPhrase {
+  color: #000000;
+  background-color: #BCC3C3;
+}
+
+#secondWords, #secondUnmatched {
+  background-color: #16122A;
+}
+
+#secondPhrase {
+  color: #000000;
+  background-color: #C2BFD0;
+}
