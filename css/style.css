@@ -2,6 +2,14 @@ textarea {
   resize: none;
 }
 
+#firstUnmatched {
+ height: 60px;
+}
+
+#secondtUnmatched {
+ height: 60px;
+}
+
 #firstWords, #firstUnmatched {
   background-color: #0E1818;
 }
@@ -18,4 +26,8 @@ textarea {
 #secondPhrase {
   color: #000000;
   background-color: #C2BFD0;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none;
 }
