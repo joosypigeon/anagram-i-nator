@@ -1,17 +1,21 @@
 'use strict';
 
-app.factory('compare', [ 'anagramData', '$interval', function(anagramData, $interval){
-    var aphabetCount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        aCharCode = 'a'.charCodeAt(0),
-        alphabet = 'abcdefghijklmnopqrstuvwxyz',
-        firstUnmatched = '',
-        secondUnmatched = '',
-        firstUnmatchedWithSpaces = '',
-        secondUnmatchedWithSpaces = '',
-        first, second;
+app.factory('compare', [ 'anagramData', '$timeout', function(anagramData, $timeout){
+   var aphabetCount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+       aCharCode = 'a'.charCodeAt(0),
+       alphabet = 'abcdefghijklmnopqrstuvwxyz',
+       firstUnmatched = '',
+       secondUnmatched = '',
+       firstUnmatchedWithSpaces = '',
+       secondUnmatchedWithSpaces = '',
+       first, second,
+       waiting = false, pending = false, count;
+        
+   var timeStamp = new Date().getTime();
 
    return {
       update: function update (s) {
+//console.log('update:start');
          firstUnmatched = '',
          secondUnmatched = '',
          firstUnmatchedWithSpaces = '';
@@ -19,24 +23,35 @@ app.factory('compare', [ 'anagramData', '$interval', function(anagramData, $inte
 
          findUnmatched();
          
-         if(!s.waiting){
-            s.waiting = true;
-            anagramData.getAnagrams(firstUnmatched, secondUnmatched, updateWords, errorCb);
-         } else if (!s.pending) {
-            s.pending = true;
-            alert('pending!');
-            $interval(function(){
-            alert('doing it!');
-               s.waiting = false;
-               s.pending = false;
+         if(!waiting){
+//console.log('setting waiting true');
+            waiting = true;
+            anagramData.getAnagrams(new Date().getTime(), firstUnmatched, secondUnmatched, updateWords, errorCb);
+         } else if (!pending) {
+            pending = true;
+//console.log('setting pending true');
+            $timeout(function(){
+//console.log('interval firing: waiting and pending false');
+               waiting = false;
+               pending = false;
                update(s);
-            },1000, 1);
+            },1000);
+         } else {
+            //console.log('both waiting and pending are true');
          }
-         
+//console.log('update:end');
          function findUnmatched(){
-            first = s.first.toLowerCase().split('').filter(function(x){return 'a' <= x && x <= 'z'}).join('');
-            second = s.second.toLowerCase().split('').filter(function(x){return 'a' <= x && x <= 'z'}).join('');
+            var count = 0, isLetter;
 
+            first = s.first.toLowerCase().split('').filter(letterFilter).join('');
+            if(count > app.MAX_LETTERS){
+               s.first = first;
+            }
+            count = 0;
+            second = s.second.toLowerCase().split('').filter(letterFilter).join('');
+            if(count > app.MAX_LETTERS){
+               s.second = second;
+            }
             for(var i = 0; i < 26; i++) {aphabetCount[i] = 0;}
 
             s.first.toLowerCase().split('').filter(function(x){return 'a' <= x && x <= 'z'}).map(function(x){return x.charCodeAt(0) - aCharCode}).forEach(function(x){aphabetCount[x]+=1;});
@@ -58,18 +73,40 @@ app.factory('compare', [ 'anagramData', '$interval', function(anagramData, $inte
 
             s.firstUnmatched = firstUnmatchedWithSpaces;
             s.secondUnmatched = secondUnmatchedWithSpaces;
+            function letterFilter(x,i){               
+               isLetter = 'a' <= x && x <= 'z';
+               if(isLetter){
+                  count++;
+               }
+               return isLetter && count <= app.MAX_LETTERS;
+            }
          }
          
-         function updateWords (data){
+         function updateWords (time, data){
             var wordsA = data.phraseA.join(' '), wordsB = data.phraseB.join(' ');
             
-            s.firstWords = wordsA;
-            s.secondWords = wordsB;
+//console.log('updateWords:timeStamp:'+timeStamp);
+//console.log('updateWords:time:'+time);
+
+            if(timeStamp > time){
+//console.log('timeStamp is after time!!! ');
+            } else {
+               timeStamp = time;
+               s.firstWords = wordsA;
+               s.secondWords = wordsB;
+            }
+
+            waiting = false;
             
-            s.waiting = false;
+//console.log('updateWords:'+time+':waiting false');
+//console.log('updateWords:'+time+':myThing:'+data.myThing);
+
          }
          
-         function errorCb() {s.waiting = false;}
+         function errorCb() {
+//console.log('errorCb:waiting false');
+            waiting = false;
+         }
       }
    };
 }]);

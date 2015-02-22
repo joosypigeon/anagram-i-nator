@@ -32,7 +32,7 @@
             <div class="row">
               <label for="firstPhrase" class="control-label col-md-6">First Phrase:</label>
               <div class="col-md-6">
-                <textarea id="firstPhrase" rows="2" cols="26" maxlength="52" class="form-control" placeholder="Enter you first phrase here . . ." ng-model="first" ng-change="update()"></textarea>
+                <textarea id="firstPhrase" rows="2" cols="26" no-return maxlength="52" class="form-control" placeholder="Enter you first phrase here . . ." ng-model="first" ng-change="update()"></textarea>
               </div>
             </div>
   
@@ -44,7 +44,6 @@
                 </div>
               </div>
             </div>
-          
 
               <label for="firstWords" class="control-label col-md-12">Sample words found in unmatched:</label>
               <div class="col-md-12">
@@ -65,7 +64,7 @@
             <div class="row">
               <label for="secondPhrase" class="control-label col-md-6">Second Phrase:</label>
               <div class="col-md-6">
-                <textarea id="secondPhrase" rows="2" cols="26" maxlength="52" class="form-control" placeholder="Enter you second phrase here . . ." ng-model="second" ng-change="update()"></textarea>
+                <textarea id="secondPhrase" rows="2" cols="26" no-return maxlength="52" class="form-control" placeholder="Enter you second phrase here . . ." ng-model="second" ng-change="update()"></textarea>
               </div>
             </div>
   
@@ -105,6 +104,6 @@
     <script src="js/controllers/AnagramController.js"></script>
     <script src="js/services/Compare.js"></script>
     <script src="js/services/AnagramData.js"></script>
-
+    <script src="js/directives/NoReturn.js"></script>
   </body>
 </html>

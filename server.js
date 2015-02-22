@@ -18,23 +18,25 @@
                 app = express();
 
             app.use('/data/:letters', function(req, res){
+               console.log('----------------');
                var letters = req.params.letters,
                   index = letters.indexOf('-'),
                   anagramsA, anagramsB, lettersA, lettersB;
-               
+               console.log('letters:'+letters) 
+               console.log('index:'+index);
                if(index === 0){
                   lettersA = '';
-                  lettersB = letters
+                  lettersB = letters.slice(1);
                } else if (index === letters.length - 1) {
-                  lettersA = letters;
+                  lettersA = letters.slice(0,index);
                   lettersB = '';
                } else {
-                  lettersA = letters.slice(0,index-1);
-                  lettersB = letters.slice(index+1,letters.length - 1)
+                  lettersA = letters.slice(0,index );
+                  lettersB = letters.slice(index + 1,letters.length - 1)
                }
 
-               //console.log('lettersA:"'+lettersA+'"');
-               //console.log('lettersB:"'+lettersB+'"');
+               console.log('lettersA:"'+lettersA+'"');
+               console.log('lettersB:"'+lettersB+'"');
 
                if(index === -1 || badLetters(lettersA) || badLetters(lettersB)){
                    res.status(400).json({status: 'bad request'});
@@ -44,7 +46,7 @@
                   
                   res.status(200).json({status: 'good request', phraseA: anagramsA, phraseB: anagramsB});
                }
-               
+               console.log('----------------');
                res.end();
             });
 
@@ -202,6 +204,9 @@
               // abandon loop
 //console.log('stepping out to outter loop');
               // step out to outter loop
+              if(currentIndex === 0) {
+               break;
+              }
               index[currentIndex] = 0;
               cumulative[currentIndex] = 0;
               currentIndex -= 1;

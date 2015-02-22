@@ -3,16 +3,17 @@
 app.controller('AnagramController',
   function($scope, compare){  
    $('#firstUnmatched').height(60);
+   $('#firstWords').height(200);
    $('#secondUnmatched').height(60);
  
+
     $scope.first = '';
     $scope.firstUnmatched = '';
     $scope.firstWords = '';
     $scope.second = '';
     $scope.secondUnmatched = '';
     $scope.secondWords = '';
-    $scope.test = '';
-    
+        
     // waiting is set to true if we are waiting for anagram data
     $scope.waiting = false; 
     

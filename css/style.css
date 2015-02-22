@@ -14,6 +14,10 @@ textarea {
   background-color: #0E1818;
 }
 
+#firstWords {
+    overflow: auto;
+}
+
 #firstPhrase {
   color: #000000;
   background-color: #BCC3C3;
