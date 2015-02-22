@@ -1,35 +1,41 @@
 textarea {
-  resize: none;
+    resize: none;
 }
 
 #firstUnmatched {
- height: 60px;
+    height: 60px;
 }
 
 #secondtUnmatched {
- height: 60px;
+    height: 60px;
 }
 
-#firstWords, #firstUnmatched {
-  background-color: #0E1818;
+.firstWords, #firstUnmatched {
+    background-color: #0E1818;
 }
 
-#firstWords {
+.firstWords {
+    height: 200px;
     overflow: auto;
 }
 
 #firstPhrase {
-  color: #000000;
-  background-color: #BCC3C3;
+    color: #000000;
+    background-color: #BCC3C3;
 }
 
-#secondWords, #secondUnmatched {
-  background-color: #16122A;
+.secondWords, #secondUnmatched {
+    background-color: #16122A;
+}
+
+.secondWords {
+    height: 200px;
+    overflow: auto;
 }
 
 #secondPhrase {
-  color: #000000;
-  background-color: #C2BFD0;
+    color: #000000;
+    background-color: #C2BFD0;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], .ng-cloak, .x-ng-cloak {
