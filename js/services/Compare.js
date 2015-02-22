@@ -43,14 +43,16 @@ app.factory('compare', [ 'anagramData', '$timeout', function(anagramData, $timeo
          function findUnmatched(){
             var count = 0, isLetter;
 
-            first = s.first.toLowerCase().split('').filter(letterFilter).join('');
+            first = s.first.toLowerCase().split('').filter(strictLetterFilter).join('');
             if(count > app.MAX_LETTERS){
-               s.first = first;
+               count = 0;
+               s.first = s.first.split('').filter(lengthFilter).join('');
             }
             count = 0;
-            second = s.second.toLowerCase().split('').filter(letterFilter).join('');
+            second = s.second.toLowerCase().split('').filter(strictLetterFilter).join('');
             if(count > app.MAX_LETTERS){
-               s.second = second;
+               count = 0;
+               s.second = s.second.split('').filter(lengthFilter).join('');
             }
             for(var i = 0; i < 26; i++) {aphabetCount[i] = 0;}
 
@@ -73,12 +75,19 @@ app.factory('compare', [ 'anagramData', '$timeout', function(anagramData, $timeo
 
             s.firstUnmatched = firstUnmatchedWithSpaces;
             s.secondUnmatched = secondUnmatchedWithSpaces;
-            function letterFilter(x,i){               
+            function strictLetterFilter(x,i){               
                isLetter = 'a' <= x && x <= 'z';
                if(isLetter){
                   count++;
                }
                return isLetter && count <= app.MAX_LETTERS;
+            }
+            function lengthFilter(x){               
+               isLetter = ('a' <= x && x <= 'z') || ('A' <= x && x <= 'B');
+               if(isLetter){
+                  count++;
+               }
+               return !isLetter || (count <= app.MAX_LETTERS && isLetter);
             }
          }
          
