@@ -19,7 +19,7 @@
         <header class="container">
             <div class="jumbotron">
                 <h1>Anagram-i-nator</h1>
-                <p class="lead">Type and match to make anagram phases.</p>
+                <p class="lead">Type and match to make anagram phases of upto 26 letters in length.</p>
             </div>
         </header>
         <section id="body" class="container" ng-controller="AnagramController"> 
@@ -47,12 +47,25 @@
 
                         <label for="firstWords" class="control-label col-md-12">Sample words found in unmatched:</label>
                         <div class="col-md-12">
+                            <form> 
+                                
+                                    <input ng-repeat="words in firstWordsAll track by $index" 
+                                           ng-checked="$index===0"
+                                           id="first{{$index}}" type="radio" name="showFirst" ng-model="$parent.showFirst" value="first{{$index}}">
+                           
+                            </form>
+                            
+
+
                             <div ng-repeat="words in firstWordsAll track by $index" >
-                                <p>words of length: {{$index + 1}}<p>
-                                <div class="firstWords well well-sm panel">
-                                    <p>{{words}}</p>
+                                <div ng-show="showFirst === 'first'+$index" >
+                                    <p class="small">{{wordsTitle[$index]}}<p>
+                                    <div class="firstWords well well-sm panel">
+                                        <p>{{words}}</p>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -82,10 +95,21 @@
 
                         <label for="secondWords" class="control-label col-md-12">Sample words found in unmatched:</label>
                         <div class="col-md-12">
-                            <div ng-repeat="words in secondWordsAll track by $index" >
-                                <p>words of length: {{$index + 1}}<p>
-                                <div class="secondWords well well-sm panel">
-                                    <p>{{words}}</p>
+                            
+                                <form> 
+                                
+                                    <input ng-repeat="words in secondWordsAll track by $index" 
+                                           ng-checked="$index===0"
+                                           id="second{{$index}}" type="radio"
+                                           name="showSecond" ng-model="$parent.showSecond" value="second{{$index}}">
+                           
+                            </form>
+                             <div ng-repeat="words in secondWordsAll track by $index" >
+                                <div ng-show="showSecond === 'second'+$index" >
+                                    <p class="small">{{wordsTitle[$index]}}<p>
+                                    <div class="secondWords well well-sm panel">
+                                        <p>{{words}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

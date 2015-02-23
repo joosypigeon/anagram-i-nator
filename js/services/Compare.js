@@ -106,17 +106,36 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
             }
 
             function updateWords(time, data) {
-               var wordsA = data.phraseA.map(function (ws) {
+               var str, wordsA = data.phraseA.map(function (ws) {
                   return ws.join(' ');
                }),
                        wordsB = data.phraseB.map(function (ws) {
                           return ws.join(' ');
                        });
+                       
+                       console.log('wordsA[0]:"'+wordsA[0]+'"');
+               if(wordsA[0]===''){
+                  wordsA.shift();
+               } else {
+                  str = wordsA[0] + ' ' + wordsA[1];
+                  wordsA.shift();
+                  wordsA.shift();
+                  wordsA.unshift(str);
+               }
+               
+                if(wordsB[0]===''){
+                  wordsB.shift();
+               } else {
+                  str = wordsB[0] + ' ' + wordsB[1];
+                  wordsB.shift();
+                  wordsB.shift();
+                  wordsB.unshift(str);
+               }
 
-               console.log(data.phraseA);
-               console.log(wordsA);
-               console.log('updateWords:timeStamp:' + timeStamp);
-               console.log('updateWords:time:' + time);
+               //console.log(data.phraseA);
+               //console.log(wordsA);
+               //console.log('updateWords:timeStamp:' + timeStamp);
+               //console.log('updateWords:time:' + time);
 
                if (timeStamp > time) {
 //console.log('timeStamp is after time!!! ');

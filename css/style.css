@@ -38,6 +38,41 @@ textarea {
     background-color: #C2BFD0;
 }
 
+
+
+
+
+
+
+/*
+.firstWords, .secondWords {
+  position: absolute;
+}
+.ng-hide-add-active {
+  display: block!important;
+  -webkit-transition: 0.5s linear all;
+  transition: 0.5s linear all;
+}
+.ng-hide-remove-active {
+  display: block!important;
+  -webkit-transition: 0.5s linear all;
+  transition: 0.5s linear all;
+  -webkit-transition-delay: 0.5s;
+  transition-delay: 0.5s;
+}
+.ng-hide {
+  opacity: 0;
+}
+
+
+*/
+
+
+
+
+
+
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none;
 }
