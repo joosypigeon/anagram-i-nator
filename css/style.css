@@ -81,16 +81,21 @@ textarea {
 }
 
 .nav-tabs .goLeft.active, .nav-tabs .goRight.active  {
-        color: #ffffff;
+    color: #ffffff;
     cursor: pointer;
 }
 
 .firstWords a {
-        color: #ffffff;
-            text-decoration: none;
+    color: #ffffff;
+    text-decoration: none;
     cursor: pointer;
 }
 
+.secondWords a {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 .wordControllers ul.nav {
     text-align:center !important;
@@ -110,9 +115,15 @@ textarea {
     float: right;
 }
 
+.bottomaligned {position:absolute; bottom:0;  margin-bottom:7px; left: 200px;}
+.bottomright {position:absolute; bottom:0;right: 0;}
+.bottomleft {position:absolute; bottom:0;left: 0;}
+.fixedheight { height: 200px;  position:relative;}
+
 .firstWords li, .secondWords li {
     display: inline-block;
-    margin-right: 0.333em
+    margin-right: 0.333em;
+    cursor: pointer;
 }
 
 

@@ -14,7 +14,7 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
       var timeStamp = new Date().getTime();
 
       return {
-         update: function update(s) {
+         update: function update(scope) {
 //console.log('update:start');
             firstUnmatched = '',
                     secondUnmatched = '',
@@ -33,7 +33,7 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
                $timeout(function () {
 //console.log('interval firing: waiting and pending false');
                   pending = false;
-                  update(s);
+                  update(scope);
                }, 1000);
             } else {
                //console.log('both waiting and pending are true');
@@ -42,36 +42,36 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
             function findUnmatched() {
                var count = 0, isLetter;
 
-               first = s.first.toLowerCase().split('').filter(strictLetterFilter).join('');
+               first = scope.first.toLowerCase().split('').filter(strictLetterFilter).join('');
                if (count > app.MAX_LETTERS) {
                   count = 0;
-                  s.first = s.first.split('').filter(lengthFilter).join('');
+                  scope.first = scope.first.split('').filter(lengthFilter).join('');
                   count = app.MAX_LETTERS;
                }
-               s.firstCount = count;
+               scope.firstCount = count;
 
                count = 0;
-               second = s.second.toLowerCase().split('').filter(strictLetterFilter).join('');
+               second = scope.second.toLowerCase().split('').filter(strictLetterFilter).join('');
                if (count > app.MAX_LETTERS) {
                   count = 0;
-                  s.second = s.second.split('').filter(lengthFilter).join('');
+                  scope.second = scope.second.split('').filter(lengthFilter).join('');
                   count = app.MAX_LETTERS;
                }
-               s.secondCount = count;
+               scope.secondCount = count;
 
 
                for (var i = 0; i < 26; i++) {
                   aphabetCount[i] = 0;
                }
 
-               s.first.toLowerCase().split('').filter(function (x) {
+               scope.first.toLowerCase().split('').filter(function (x) {
                   return 'a' <= x && x <= 'z'
                }).map(function (x) {
                   return x.charCodeAt(0) - aCharCode
                }).forEach(function (x) {
                   aphabetCount[x] += 1;
                });
-               s.second.toLowerCase().split('').filter(function (x) {
+               scope.second.toLowerCase().split('').filter(function (x) {
                   return 'a' <= x && x <= 'z'
                }).map(function (x) {
                   return x.charCodeAt(0) - aCharCode
@@ -93,8 +93,8 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
                   }
                });
 
-               s.firstUnmatched = firstUnmatchedWithSpaces;
-               s.secondUnmatched = secondUnmatchedWithSpaces;
+               scope.firstUnmatched = firstUnmatchedWithSpaces;
+               scope.secondUnmatched = secondUnmatchedWithSpaces;
 
                // inner functins bellow
                function strictLetterFilter(x, i) {
@@ -116,9 +116,8 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
             // callbacks for AnagramData
             function updateWords(time, data) {
                var a, wordsA = data.phraseA,
-                       wordsB = data.phraseB;
+                       wordsB = data.phraseB, i;
 
-               console.log('wordsA[0]:"' + wordsA[0] + '"');
                if (wordsA[0].length === 0) {
                   wordsA.shift();
                } else {
@@ -146,15 +145,27 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
 //console.log('timeStamp is after time!!! ');
                } else {
                   timeStamp = time;
-                  s.firstWordsAll = wordsA;
-                  s.secondWordsAll = wordsB;
+                  scope.firstWordsAll = wordsA;
+                  scope.secondWordsAll = wordsB;
                }
 
                waiting = false;
 
+               scope.firstWordsAll.forEach(function (words, i) {
+                  scope.firstWordsCount[i] = words.length;
+               });
+               scope.secondWordsAll.forEach(function (words, i) {
+                  scope.secondWordsCount[i] = words.length;
+               });
 //console.log('updateWords:'+time+':waiting false');
 
-
+               //reset paganation
+               for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+                  scope.currentFirstPage[i] = 0;
+               }
+               for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+                  scope.currentSecondPage[i] = 0;
+               }
             }
             function errorCb() {
 //console.log('errorCb:waiting false');

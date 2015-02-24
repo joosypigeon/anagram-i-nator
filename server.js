@@ -47,7 +47,7 @@
 
                   res.status(200).json({status: 'good request', phraseA: anagramsA, phraseB: anagramsB});
                }
-               console.log('----------------');
+               console.log('Data returned.');
                res.end();
             });
 

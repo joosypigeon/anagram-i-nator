@@ -47,6 +47,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <p align="center"><b>Words found in unmatched:</b></p>
                         <div class="col-md-12">
                             <div class="wordControllers">
@@ -56,16 +57,24 @@
                                     <tab ng-repeat="words in firstWordsAll track by $index" active="getFirstActive($index)" >
                                         <tab-heading>
                                             <div ng-click="setFirstActive($index)">
-                                            <i ng-show="showFirst($index)" class="fa fa-circle"></i>
-                                            <i ng-show="!showFirst($index)" class="fa fa-circle-o"></i>
+                                                <i ng-show="showFirst($index)" class="fa fa-circle"></i>
+                                                <i ng-show="!showFirst($index)" class="fa fa-circle-o"></i>
                                             </div>
                                         </tab-heading>
-                                        <div class="firstWords well well-sm panel">
+                                        <div class="fixedheight firstWords well well-sm panel">
+
                                             <ul class="list-unstyled" onclick="clickThrough(event)">
-                                                <li ng-repeat="word in words">{{word}}</li>
+                                                <li ng-repeat="word in words| orderBy | startFrom: getCurrentFirstPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
+
+                                            <a class="bottomleft" ng_show="firstWordsAll[$index].length !== 0" ng_class="'active'" ng-click="previousFirstPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="firstWordsAll[$index].length !== 0">
+
+                                            <a class="bottomright" ng_show="firstWordsAll[$index].length !== 0" ng_class="'active'" ng-click="nextFirstPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
+
+                     
                                         </div>
-                                        <p align="center">{{wordsTitle[$index]}}<p>
+                                        <p align="center">{{wordsTitle[$index]}}<span ng-show='firstWordsAll[$index].length !== 0'> : words found {{firstWordsCount[$index]}} : Page {{getCurrentFirstPage($index)+1}} of {{numberOfFirstPages($index)}}</span></p>
+
                                     </tab>
                                 </tabset>
                             </div>
@@ -97,21 +106,28 @@
                         <div class="col-md-12">
                             <div class="wordControllers">
                                 <tabset>
-                                    <a class="goLeft" ng_class="'active'"  ng-click="secondBack()"><i class="fa fa-arrow-circle-left"></i></a>
-                                    <a class="goRight"  ng-click="secondForward()" ng_class="'active'"><i class="fa fa-arrow-circle-right"></i></a>
-                                    <tab ng-repeat="words in secondWordsAll track by $index"  active="getSecondActive($index)">
+                                   <a class="goLeft" ng_class="'active'" ng-click="secondBack()"><i class="fa fa-arrow-circle-left"></i></a>
+                                    <a class="goRight" ng-click="secondForward()" ng_class="'active'"><i class="fa fa-arrow-circle-right"></i></a>
+                                    <tab ng-repeat="words in secondWordsAll track by $index" active="getSecondActive($index)" >
                                         <tab-heading>
-                                            <div  ng-click="setSecondActive($index)">
-                                            <i ng-show="showSecond($index)" class="fa fa-circle"></i>
-                                            <i ng-show="!showSecond($index)" class="fa fa-circle-o"></i>
+                                            <div ng-click="setSecondActive($index)">
+                                                <i ng-show="showSecond($index)" class="fa fa-circle"></i>
+                                                <i ng-show="!showSecond($index)" class="fa fa-circle-o"></i>
                                             </div>
                                         </tab-heading>
-                                        <div class="secondWords well well-sm panel">
-                                            <ul class="list-unstyled">
-                                                <li ng-repeat="word in words">{{word}}</li>
+                                        <div class="fixedheight secondWords well well-sm panel">
+
+                                            <ul class="list-unstyled" onclick="clickThrough(event)">
+                                                <li ng-repeat="word in words| orderBy | startFrom: getCurrentSecondPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
+
+                                            <a class="bottomleft" ng_show="secondWordsAll[$index].length !== 0" ng_class="'active'" ng-click="previousSecondPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="secondWordsAll[$index].length !== 0">
+
+                                            <a class="bottomright" ng_show="secondWordsAll[$index].length !== 0" ng_class="'active'" ng-click="nextSecondPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
+
+                     
                                         </div>
-                                        <p align="center">{{wordsTitle[$index]}}<p>
+                                        <p align="center">{{wordsTitle[$index]}}<span ng-show='secondWordsAll[$index].length !== 0'> : words found {{secondWordsCount[$index]}} : Page {{getCurrentSecondPage($index)+1}} of {{numberOfSecondPages($index)}}</span></p>
                                     </tab>
                                 </tabset>
                             </div>
@@ -135,8 +151,10 @@
         <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
         <script src="js/app.js"></script>
         <script src="js/controllers/AnagramController.js"></script>
+        <script src="js/controllers/OutterController.js"></script>
         <script src="js/services/Compare.js"></script>
         <script src="js/services/AnagramData.js"></script>
+        <script src="js/services/StartFrom.js"></script>
         <script src="js/directives/NoReturn.js"></script>
         <script src="js/site.js"></script>
     </body>
