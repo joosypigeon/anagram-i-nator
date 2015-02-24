@@ -22,7 +22,7 @@
         <header class="container">
             <div class="jumbotron">
                 <h1>Anagram-i-nator</h1>
-                <p class="lead">Type and match letters to make pairs of anagram phrases, each of upto 26 letters in length.</p>
+                <p class="lead">Type and match letters to make pairs of anagram phrases, of upto 26 letters in length.</p>
                 <p>Punctuation and spaces are ignored.</p>
             </div>
         </header>
@@ -30,7 +30,7 @@
             <section class="col-md-6">
                 <div class="panel">
                     <div class="panel-heading">
-                        <h2 class="panel-title">In this section enter your first phrase, check for unmatched letters and word suggestions for your second phrase</h2>
+                        <h2 class="panel-title">Check for letters in the first phrase that are not matched in the second. Words made out of these unmatched letters are suggested.</h2>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -61,7 +61,9 @@
                                             </div>
                                         </tab-heading>
                                         <div class="firstWords well well-sm panel">
-                                            <p>{{words}}</p>
+                                            <ul class="list-unstyled" onclick="clickThrough(event)">
+                                                <li ng-repeat="word in words">{{word}}</li>
+                                            </ul>
                                         </div>
                                         <p align="center">{{wordsTitle[$index]}}<p>
                                     </tab>
@@ -105,7 +107,9 @@
                                             </div>
                                         </tab-heading>
                                         <div class="secondWords well well-sm panel">
-                                            <p>{{words}}</p>
+                                            <ul class="list-unstyled">
+                                                <li ng-repeat="word in words">{{word}}</li>
+                                            </ul>
                                         </div>
                                         <p align="center">{{wordsTitle[$index]}}<p>
                                     </tab>
@@ -134,5 +138,6 @@
         <script src="js/services/Compare.js"></script>
         <script src="js/services/AnagramData.js"></script>
         <script src="js/directives/NoReturn.js"></script>
+        <script src="js/site.js"></script>
     </body>
 </html>

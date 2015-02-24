@@ -50,12 +50,24 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
       $scope.firstCount = 0;
       $scope.secondCount = 0;
       $scope.maxLetters = app.MAX_LETTERS;
+      
+      a = [];
+      for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+         a.push(0);
+      }
+      $scope.firstWordsCount = a;
+      a = [];
+      for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+         a.push(0);
+      }
+      $scope.secondWordsCount = a;
+      
 
       $scope.showFirst = function(index){
-         return $scope.firstWordsAll[index] !== '';
+         return $scope.firstWordsAll[index].length !== 0;
       };
       $scope.showSecond = function(index){
-         return $scope.secondWordsAll[index] !== '';
+         return $scope.secondWordsAll[index].length !== 0;
       };
       
       $scope.getFirstActive = function(index){

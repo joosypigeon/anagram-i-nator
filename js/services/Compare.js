@@ -17,8 +17,8 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
          update: function update(s) {
 //console.log('update:start');
             firstUnmatched = '',
-            secondUnmatched = '',
-            firstUnmatchedWithSpaces = '';
+                    secondUnmatched = '',
+                    firstUnmatchedWithSpaces = '';
             secondUnmatchedWithSpaces = '';
 
             findUnmatched();
@@ -32,7 +32,6 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
 //console.log('setting pending true');
                $timeout(function () {
 //console.log('interval firing: waiting and pending false');
-                  waiting = false;
                   pending = false;
                   update(s);
                }, 1000);
@@ -50,7 +49,7 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
                   count = app.MAX_LETTERS;
                }
                s.firstCount = count;
-               
+
                count = 0;
                second = s.second.toLowerCase().split('').filter(strictLetterFilter).join('');
                if (count > app.MAX_LETTERS) {
@@ -59,8 +58,8 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
                   count = app.MAX_LETTERS;
                }
                s.secondCount = count;
-               
-               
+
+
                for (var i = 0; i < 26; i++) {
                   aphabetCount[i] = 0;
                }
@@ -96,6 +95,8 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
 
                s.firstUnmatched = firstUnmatchedWithSpaces;
                s.secondUnmatched = secondUnmatchedWithSpaces;
+
+               // inner functins bellow
                function strictLetterFilter(x, i) {
                   isLetter = 'a' <= x && x <= 'z';
                   if (isLetter) {
@@ -112,31 +113,28 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
                }
             }
 
+            // callbacks for AnagramData
             function updateWords(time, data) {
-               var str, wordsA = data.phraseA.map(function (ws) {
-                  return ws.sort().join(' ');
-               }),
-                       wordsB = data.phraseB.map(function (ws) {
-                          return ws.sort().join(' ');
-                       });
+               var a, wordsA = data.phraseA,
+                       wordsB = data.phraseB;
 
                console.log('wordsA[0]:"' + wordsA[0] + '"');
-               if (wordsA[0] === '') {
+               if (wordsA[0].length === 0) {
                   wordsA.shift();
                } else {
-                  str = wordsA[0] + ' ' + wordsA[1];
+                  a = wordsA[0].concat(wordsA[1]);
                   wordsA.shift();
                   wordsA.shift();
-                  wordsA.unshift(str);
+                  wordsA.unshift(a);
                }
 
-               if (wordsB[0] === '') {
+               if (wordsB[0].length === 0) {
                   wordsB.shift();
                } else {
-                  str = wordsB[0] + ' ' + wordsB[1];
+                  a = wordsB[0].concat(wordsB[1]);
                   wordsB.shift();
                   wordsB.shift();
-                  wordsB.unshift(str);
+                  wordsB.unshift(a);
                }
 
                //console.log(data.phraseA);
@@ -158,8 +156,6 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
 
 
             }
-
-
             function errorCb() {
 //console.log('errorCb:waiting false');
                waiting = false;
