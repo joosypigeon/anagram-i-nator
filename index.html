@@ -7,7 +7,10 @@
         <title>Anagram-i-nator</title>
 
         <!-- Bootstrap -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.2/cyborg/bootstrap.min.css" rel="stylesheet">    <link href="css/style.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.2/cyborg/bootstrap.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -19,7 +22,8 @@
         <header class="container">
             <div class="jumbotron">
                 <h1>Anagram-i-nator</h1>
-                <p class="lead">Type and match to make anagram phases of upto 26 letters in length.</p>
+                <p class="lead">Type and match letters to make pairs of anagram phrases, each of upto 26 letters in length.</p>
+                <p>Punctuation and spaces are ignored.</p>
             </div>
         </header>
         <section id="body" class="container" ng-controller="AnagramController"> 
@@ -30,12 +34,11 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <label for="firstPhrase" class="control-label col-md-6">First Phrase:</label>
+                            <label for="firstPhrase" class="control-label col-md-6">First Phrase ({{firstCount}}/{{maxLetters}}):</label>
                             <div class="col-md-6">
                                 <textarea id="firstPhrase" rows="2" cols="26" no-return maxlength="52" class="form-control" placeholder="Enter your first phrase here. Maximun number of letters 26." ng-model="first" ng-change="update()"></textarea>
                             </div>
                         </div>
-
                         <div class="row">
                             <label for="firstUnmatched" class="control-label col-md-6">Unmatched letters in first phrase:</label>
                             <div class="col-md-6">
@@ -44,28 +47,26 @@
                                 </div>
                             </div>
                         </div>
-
-                        <label for="firstWords" class="control-label col-md-12">Sample words found in unmatched:</label>
+                        <p align="center"><b>Words found in unmatched:</b></p>
                         <div class="col-md-12">
-                            <form> 
-                                
-                                    <input ng-repeat="words in firstWordsAll track by $index" 
-                                           ng-checked="$index===0"
-                                           id="first{{$index}}" type="radio" name="showFirst" ng-model="$parent.showFirst" value="first{{$index}}">
-                           
-                            </form>
-                            
-
-
-                            <div ng-repeat="words in firstWordsAll track by $index" >
-                                <div ng-show="showFirst === 'first'+$index" >
-                                    <p class="small">{{wordsTitle[$index]}}<p>
-                                    <div class="firstWords well well-sm panel">
-                                        <p>{{words}}</p>
-                                    </div>
-                                </div>
+                            <div class="wordControllers">
+                                <tabset>
+                                    <a class="goLeft" ng_class="'active'" ng-click="firstBack()"><i class="fa fa-arrow-circle-left"></i></a>
+                                    <a class="goRight" ng-click="firstForward()" ng_class="'active'"><i class="fa fa-arrow-circle-right"></i></a>
+                                    <tab ng-repeat="words in firstWordsAll track by $index" active="getFirstActive($index)" >
+                                        <tab-heading>
+                                            <div ng-click="setFirstActive($index)">
+                                            <i ng-show="showFirst($index)" class="fa fa-circle"></i>
+                                            <i ng-show="!showFirst($index)" class="fa fa-circle-o"></i>
+                                            </div>
+                                        </tab-heading>
+                                        <div class="firstWords well well-sm panel">
+                                            <p>{{words}}</p>
+                                        </div>
+                                        <p align="center">{{wordsTitle[$index]}}<p>
+                                    </tab>
+                                </tabset>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -77,12 +78,11 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <label for="secondPhrase" class="control-label col-md-6">Second Phrase:</label>
+                            <label for="secondPhrase" class="control-label col-md-6">Second Phrase  ({{secondCount}}/{{maxLetters}}):</label>
                             <div class="col-md-6">
                                 <textarea id="secondPhrase" rows="2" cols="26" no-return maxlength="52" class="form-control" placeholder="Enter your second phrase here. Maximun number of letters 26." ng-model="second" ng-change="update()"></textarea>
                             </div>
                         </div>
-
                         <div class="row">
                             <label for="secondUnmatched" class="control-label col-md-6">Unmatched letters in second phrase:</label>
                             <div class="col-md-6">
@@ -91,29 +91,27 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <label for="secondWords" class="control-label col-md-12">Sample words found in unmatched:</label>
+                        <p align="center"><b>Words found in unmatched:</b></p>
                         <div class="col-md-12">
-                            
-                                <form> 
-                                
-                                    <input ng-repeat="words in secondWordsAll track by $index" 
-                                           ng-checked="$index===0"
-                                           id="second{{$index}}" type="radio"
-                                           name="showSecond" ng-model="$parent.showSecond" value="second{{$index}}">
-                           
-                            </form>
-                             <div ng-repeat="words in secondWordsAll track by $index" >
-                                <div ng-show="showSecond === 'second'+$index" >
-                                    <p class="small">{{wordsTitle[$index]}}<p>
-                                    <div class="secondWords well well-sm panel">
-                                        <p>{{words}}</p>
-                                    </div>
-                                </div>
+                            <div class="wordControllers">
+                                <tabset>
+                                    <a class="goLeft" ng_class="'active'"  ng-click="secondBack()"><i class="fa fa-arrow-circle-left"></i></a>
+                                    <a class="goRight"  ng-click="secondForward()" ng_class="'active'"><i class="fa fa-arrow-circle-right"></i></a>
+                                    <tab ng-repeat="words in secondWordsAll track by $index"  active="getSecondActive($index)">
+                                        <tab-heading>
+                                            <div  ng-click="setSecondActive($index)">
+                                            <i ng-show="showSecond($index)" class="fa fa-circle"></i>
+                                            <i ng-show="!showSecond($index)" class="fa fa-circle-o"></i>
+                                            </div>
+                                        </tab-heading>
+                                        <div class="secondWords well well-sm panel">
+                                            <p>{{words}}</p>
+                                        </div>
+                                        <p align="center">{{wordsTitle[$index]}}<p>
+                                    </tab>
+                                </tabset>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
@@ -127,8 +125,10 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-sanitize.js"></script>
+        <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
         <script src="js/app.js"></script>
         <script src="js/controllers/AnagramController.js"></script>
         <script src="js/services/Compare.js"></script>

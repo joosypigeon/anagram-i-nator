@@ -17,8 +17,8 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
          update: function update(s) {
 //console.log('update:start');
             firstUnmatched = '',
-                    secondUnmatched = '',
-                    firstUnmatchedWithSpaces = '';
+            secondUnmatched = '',
+            firstUnmatchedWithSpaces = '';
             secondUnmatchedWithSpaces = '';
 
             findUnmatched();
@@ -47,13 +47,20 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
                if (count > app.MAX_LETTERS) {
                   count = 0;
                   s.first = s.first.split('').filter(lengthFilter).join('');
+                  count = app.MAX_LETTERS;
                }
+               s.firstCount = count;
+               
                count = 0;
                second = s.second.toLowerCase().split('').filter(strictLetterFilter).join('');
                if (count > app.MAX_LETTERS) {
                   count = 0;
                   s.second = s.second.split('').filter(lengthFilter).join('');
+                  count = app.MAX_LETTERS;
                }
+               s.secondCount = count;
+               
+               
                for (var i = 0; i < 26; i++) {
                   aphabetCount[i] = 0;
                }
@@ -107,14 +114,14 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
 
             function updateWords(time, data) {
                var str, wordsA = data.phraseA.map(function (ws) {
-                  return ws.join(' ');
+                  return ws.sort().join(' ');
                }),
                        wordsB = data.phraseB.map(function (ws) {
-                          return ws.join(' ');
+                          return ws.sort().join(' ');
                        });
-                       
-                       console.log('wordsA[0]:"'+wordsA[0]+'"');
-               if(wordsA[0]===''){
+
+               console.log('wordsA[0]:"' + wordsA[0] + '"');
+               if (wordsA[0] === '') {
                   wordsA.shift();
                } else {
                   str = wordsA[0] + ' ' + wordsA[1];
@@ -122,8 +129,8 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
                   wordsA.shift();
                   wordsA.unshift(str);
                }
-               
-                if(wordsB[0]===''){
+
+               if (wordsB[0] === '') {
                   wordsB.shift();
                } else {
                   str = wordsB[0] + ' ' + wordsB[1];
@@ -149,7 +156,9 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
 
 //console.log('updateWords:'+time+':waiting false');
 
+
             }
+
 
             function errorCb() {
 //console.log('errorCb:waiting false');

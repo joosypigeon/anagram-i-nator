@@ -38,12 +38,77 @@ textarea {
     background-color: #C2BFD0;
 }
 
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #222222;
+    border-color: none;
+    border-image: none;
+    border-style: none;
+    border-width: 0px;
+    color: #ffffff;
+    cursor: default;
+}
+.nav-tabs > li > a {
+    border: 0px solid transparent;
+    border-radius: 0;
+    line-height: 1;
+    margin-right: 0px;
+}
+.nav > li > a {
+    display: block;
+    padding: 0;
+    margin-bottom: 10px;
+    position: relative;
+}
+.nav-tabs a {
+    color: dimgrey;
+}
+
+.nav-tabs .goLeft, .nav-tabs .goRight  {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #222222;
+    border-color: none;
+    border-image: none;
+    border-style: none;
+    border-width: 0px;
+
+}
+
+.nav-tabs .goLeft.active, .nav-tabs .goRight.active  {
+        color: #ffffff;
+    cursor: pointer;
+}
+
+.firstWords a {
+        color: #ffffff;
+            text-decoration: none;
+    cursor: pointer;
+}
 
 
+.wordControllers ul.nav {
+    text-align:center !important;
+}
+.wordControllers ul.nav > li {
+    float: none;
+    display:inline-block;
+    *display:inline; /*IE7*/
+    *zoom:1; /*IE7*/
+    margin-right:10px;
+}
+.goLeft{
+    float: left;
+}
 
-
-
-
+.goRight{
+    float: right;
+}
 /*
 .firstWords, .secondWords {
   position: absolute;

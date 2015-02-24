@@ -2,7 +2,6 @@
 
 app.directive('noReturn', function () {
    var items;
-   console.log('hello');
    return {
       restrict: 'A',
       link: function (scope, elements, attrs, controller) {
