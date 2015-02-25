@@ -16,9 +16,9 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
       return {
          update: function update(scope) {
 //console.log('update:start');
-            firstUnmatched = '',
-                    secondUnmatched = '',
-                    firstUnmatchedWithSpaces = '';
+            firstUnmatched = '';
+            secondUnmatched = '';
+            firstUnmatchedWithSpaces = '';
             secondUnmatchedWithSpaces = '';
 
             findUnmatched();
@@ -39,6 +39,9 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
                //console.log('both waiting and pending are true');
             }
 //console.log('update:end');
+
+// INNER FUNCTIONS BELLOW
+
             function findUnmatched() {
                var count = 0, isLetter;
 

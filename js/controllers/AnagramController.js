@@ -50,7 +50,14 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
       $scope.secondCount = 0;
       $scope.maxLetters = app.MAX_LETTERS;
 
-
+      $scope.setFirst = function (str) {
+         console.log('setFirst:'+str);
+         $scope.first = str;
+      }
+      $scope.setSecond = function (str) {
+         console.log('setSecond:'+str);
+         $scope.second = str;
+      }
 
       $scope.showFirst = function (index) {
          return $scope.firstWordsAll[index].length !== 0;
@@ -92,17 +99,17 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
       for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
          $scope.currentFirstPage.push(0);
       }
-       $scope.currentSecondPage = [];
+      $scope.currentSecondPage = [];
       for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
          $scope.currentSecondPage.push(0);
       }
       // HACK!
-      $scope.pageSize = [100,120,90,70,60,55,50,45,40,35,30,30,30,30];
-      
-      
-      
-      
-         
+      $scope.pageSize = [100, 120, 90, 70, 60, 55, 50, 45, 40, 35, 30, 30, 30, 30];
+
+
+
+
+
       $scope.setCurrentFirstPage = function (index, currentPage) {
          $scope.currentFirstPage[index] = currentPage;
       }
@@ -115,12 +122,12 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
          return Math.ceil($scope.firstWordsAll[index].length / $scope.pageSize[index]);
       };
 
-      $scope.previousFirstPage = function(index) {
+      $scope.previousFirstPage = function (index) {
          $scope.currentFirstPage[index] = ($scope.currentFirstPage[index] + $scope.numberOfFirstPages(index) - 1) % $scope.numberOfFirstPages(index);
          console.log($scope.currentFirstPage[index]);
       }
-      
-      $scope.nextFirstPage = function(index) {
+
+      $scope.nextFirstPage = function (index) {
          $scope.currentFirstPage[index] = ($scope.currentFirstPage[index] + 1) % $scope.numberOfFirstPages(index);
       }
 
@@ -130,7 +137,7 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
 
 
 
-     $scope.setCurrentSecondPage = function (index, currentPage) {
+      $scope.setCurrentSecondPage = function (index, currentPage) {
          $scope.currentSecondPage[index] = currentPage;
       }
       $scope.getCurrentSecondPage = function (index) {
@@ -142,11 +149,11 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
          return Math.ceil($scope.secondWordsAll[index].length / $scope.pageSize[index]);
       };
 
-      $scope.previousSecondPage = function(index) {
+      $scope.previousSecondPage = function (index) {
          $scope.currentSecondPage[index] = ($scope.currentSecondPage[index] + $scope.numberOfSecondPages(index) - 1) % $scope.numberOfSecondPages(index);
       }
-      
-      $scope.nextSecondPage = function(index) {
+
+      $scope.nextSecondPage = function (index) {
          $scope.currentSecondPage[index] = ($scope.currentSecondPage[index] + 1) % $scope.numberOfSecondPages(index);
       }
 

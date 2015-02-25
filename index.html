@@ -63,7 +63,7 @@
                                         </tab-heading>
                                         <div class="fixedheight firstWords well well-sm panel">
 
-                                            <ul class="list-unstyled" onclick="clickThrough(event)">
+                                            <ul first-click-through class="list-unstyled">
                                                 <li ng-repeat="word in words| orderBy | startFrom: getCurrentFirstPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
 
@@ -117,7 +117,7 @@
                                         </tab-heading>
                                         <div class="fixedheight secondWords well well-sm panel">
 
-                                            <ul class="list-unstyled" onclick="clickThrough(event)">
+                                            <ul second-click-through class="list-unstyled">
                                                 <li ng-repeat="word in words| orderBy | startFrom: getCurrentSecondPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
 
@@ -156,6 +156,6 @@
         <script src="js/services/AnagramData.js"></script>
         <script src="js/services/StartFrom.js"></script>
         <script src="js/directives/NoReturn.js"></script>
-        <script src="js/site.js"></script>
+        <script src="js/directives/ClickThrough.js"></script>
     </body>
 </html>
