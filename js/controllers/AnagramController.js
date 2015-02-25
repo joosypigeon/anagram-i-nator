@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($scope, $sce, compare) {
+app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'compare', function ($scope, $compile, filterFilter, compare) {
       var i, a, b, firstActive = 0, secondActive = 0;
       $('#firstUnmatched').height(60);
       $('#secondUnmatched').height(60);
@@ -32,6 +32,7 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
          b.push[0];
       }
       $scope.firstWordsAll = a;
+      $scope.firstWordsFiltered = a;
       $scope.firstWordsCount = b;
 
       $scope.second = '';
@@ -43,6 +44,7 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
          b.push(0);
       }
       $scope.secondWordsAll = a;
+      $scope.secondWordsFiltered = a;
       $scope.secondWordsCount = b;
 
 
@@ -51,19 +53,19 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
       $scope.maxLetters = app.MAX_LETTERS;
 
       $scope.setFirst = function (str) {
-         console.log('setFirst:'+str);
+         console.log('setFirst:' + str);
          $scope.first = str;
       }
       $scope.setSecond = function (str) {
-         console.log('setSecond:'+str);
+         console.log('setSecond:' + str);
          $scope.second = str;
       }
 
       $scope.showFirst = function (index) {
-         return $scope.firstWordsAll[index].length !== 0;
+         return $scope.firstWordsFiltered[index].length !== 0;
       };
       $scope.showSecond = function (index) {
-         return $scope.secondWordsAll[index].length !== 0;
+         return $scope.secondWordsFiltered[index].length !== 0;
       };
 
       $scope.getFirstActive = function (index) {
@@ -119,7 +121,7 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
 
 
       $scope.numberOfFirstPages = function (index) {
-         return Math.ceil($scope.firstWordsAll[index].length / $scope.pageSize[index]);
+         return Math.ceil($scope.firstWordsFiltered[index].length / $scope.pageSize[index]);
       };
 
       $scope.previousFirstPage = function (index) {
@@ -146,7 +148,7 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
 
 
       $scope.numberOfSecondPages = function (index) {
-         return Math.ceil($scope.secondWordsAll[index].length / $scope.pageSize[index]);
+         return Math.ceil($scope.secondWordsFiltered[index].length / $scope.pageSize[index]);
       };
 
       $scope.previousSecondPage = function (index) {
@@ -159,6 +161,16 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
 
 
 
+      $scope.match = function() {
+         console.log('---');
+         console.log('$scope.first:"'+$scope.first+'"');
+         console.log('$scope.first.length:"'+$scope.first.length+'"');
+         console.log('$scope.second.length:"'+$scope.second.length+'"');
+        console.log('$scope.firstUnmatched:"'+$scope.firstUnmatched+'"');
+        console.log('$scope.secondUnmatched:"'+$scope.secondUnmatched+'"');
+         console.log('---');
+         return $scope.first != '' && $scope.first.length === $scope.second.length && $scope.firstUnmatched === '' && $scope.secondUnmatched === '';
+      }
 
 
       // update unmatched letters and ask server for words from unmatched
@@ -166,4 +178,49 @@ app.controller('AnagramController', ['$scope', '$sce', 'compare', function ($sco
       $scope.update = function () {
          compare.update($scope);
       };
+
+
+
+      //Add search controls
+      angular.element(document).ready(function () {
+         var markup, fn;
+         for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+            markup = "<input class='input-sm firstFilter' placeholder='filter . . .' type='text' maxlength='" + app.MAX_WORD_LENGTH + "' size='" + app.MAX_WORD_LENGTH + "' ng-model='firstFilter" + i + "' />";
+            angular.element('#firstPagination' + i).prepend($compile(markup)($scope));
+
+            markup = "<input class='input-sm secondFilter' placeholder='filter . . .' type='text' maxlength='" + app.MAX_WORD_LENGTH + "' size='" + app.MAX_WORD_LENGTH + "' ng-model='secondFilter" + i + "' />";
+            angular.element('#secondPagination' + i).prepend($compile(markup)($scope));
+
+         }
+
+         // avoid obvious clourse bug
+         // Filter suggested words
+         for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+            $scope.$watch('firstFilter' + i, (function (i) {
+               return function (newTerm, oldTerm) {
+                  if (newTerm !== oldTerm) {
+                     $scope.firstWordsFiltered[i] = filterFilter($scope.firstWordsAll[i], newTerm);
+                     $scope.firstWordsCount[i] = $scope.firstWordsFiltered[i].length;
+                     $scope.currentFirstPage[i] = 0;
+                  }
+               };
+            })(i));
+            $scope.$watch('secondFilter' + i, (function (i) {
+               return function (newTerm, oldTerm) {
+                  if (newTerm !== oldTerm) {
+                     $scope.secondWordsFiltered[i] = filterFilter($scope.secondWordsAll[i], newTerm);
+                     $scope.secondWordsCount[i] = $scope.secondWordsFiltered[i].length;
+                     $scope.currentSecondPage[i] = 0;
+                  }
+               };
+            })(i));
+         }//end of for
+         
+
+
+      });
+
+
+
+
    }]);

@@ -8,9 +8,8 @@
 
         <!-- Bootstrap -->
         <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.2/cyborg/bootstrap.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
+        <link href="css/style.css" rel="stylesheet">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -43,7 +42,10 @@
                             <label for="firstUnmatched" class="control-label col-md-6">Unmatched letters in first phrase:</label>
                             <div class="col-md-6">
                                 <div id="firstUnmatched" class="well well-sm panel">
-                                    <p>{{firstUnmatched}}</p>
+                                    <p ng-show="!match()">{{firstUnmatched}}</p>
+
+                                    <p class="text-center match" ng-show="match()">MATCH!</p>
+
                                 </div>
                             </div>
                         </div>
@@ -54,7 +56,7 @@
                                 <tabset>
                                     <a class="goLeft" ng_class="'active'" ng-click="firstBack()"><i class="fa fa-arrow-circle-left"></i></a>
                                     <a class="goRight" ng-click="firstForward()" ng_class="'active'"><i class="fa fa-arrow-circle-right"></i></a>
-                                    <tab ng-repeat="words in firstWordsAll track by $index" active="getFirstActive($index)" >
+                                    <tab ng-repeat="words in firstWordsFiltered track by $index" active="getFirstActive($index)" >
                                         <tab-heading>
                                             <div ng-click="setFirstActive($index)">
                                                 <i ng-show="showFirst($index)" class="fa fa-circle"></i>
@@ -67,13 +69,13 @@
                                                 <li ng-repeat="word in words| orderBy | startFrom: getCurrentFirstPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
 
-                                            <a class="bottomleft" ng_show="firstWordsAll[$index].length !== 0" ng_class="'active'" ng-click="previousFirstPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="firstWordsAll[$index].length !== 0">
+                                            <a class="bottomleft" ng_show="numberOfFirstPages($index) > 1" ng_class="'active'" ng-click="previousFirstPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="numberOfFirstPages($index) > 1">
 
-                                            <a class="bottomright" ng_show="firstWordsAll[$index].length !== 0" ng_class="'active'" ng-click="nextFirstPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
+                                                <a class="bottomright" ng_show="firstWordsFiltered[$index].length !== 0" ng_class="'active'" ng-click="nextFirstPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
 
-                     
+
                                         </div>
-                                        <p align="center">{{wordsTitle[$index]}}<span ng-show='firstWordsAll[$index].length !== 0'> : words found {{firstWordsCount[$index]}} : Page {{getCurrentFirstPage($index)+1}} of {{numberOfFirstPages($index)}}</span></p>
+                                        <p class="small" id="firstPagination{{$index}}" align="center"> : {{wordsTitle[$index]}}<span ng-show='firstWordsAll[$index].length !== 0'> : words found {{firstWordsCount[$index]}} : Page {{getCurrentFirstPage($index) + 1}} of {{numberOfFirstPages($index)}}</span></p>
 
                                     </tab>
                                 </tabset>
@@ -98,7 +100,10 @@
                             <label for="secondUnmatched" class="control-label col-md-6">Unmatched letters in second phrase:</label>
                             <div class="col-md-6">
                                 <div id="secondUnmatched" class="well well-sm panel">
-                                    <p>{{secondUnmatched}}</p>
+                                    <p ng-show="!match()">{{secondUnmatched}}</p>
+                                    <div  ng-show="match()" class="match" >
+                                        <p class="text-center match" ng-show="match()">MATCH!</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -106,9 +111,9 @@
                         <div class="col-md-12">
                             <div class="wordControllers">
                                 <tabset>
-                                   <a class="goLeft" ng_class="'active'" ng-click="secondBack()"><i class="fa fa-arrow-circle-left"></i></a>
+                                    <a class="goLeft" ng_class="'active'" ng-click="secondBack()"><i class="fa fa-arrow-circle-left"></i></a>
                                     <a class="goRight" ng-click="secondForward()" ng_class="'active'"><i class="fa fa-arrow-circle-right"></i></a>
-                                    <tab ng-repeat="words in secondWordsAll track by $index" active="getSecondActive($index)" >
+                                    <tab ng-repeat="words in secondWordsFiltered track by $index" active="getSecondActive($index)" >
                                         <tab-heading>
                                             <div ng-click="setSecondActive($index)">
                                                 <i ng-show="showSecond($index)" class="fa fa-circle"></i>
@@ -121,13 +126,13 @@
                                                 <li ng-repeat="word in words| orderBy | startFrom: getCurrentSecondPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
 
-                                            <a class="bottomleft" ng_show="secondWordsAll[$index].length !== 0" ng_class="'active'" ng-click="previousSecondPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="secondWordsAll[$index].length !== 0">
+                                            <a class="bottomleft" ng_show="secondWordsFiltered[$index].length !== 0" ng_class="'active'" ng-click="previousSecondPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="secondWordsFiltered[$index].length !== 0">
 
-                                            <a class="bottomright" ng_show="secondWordsAll[$index].length !== 0" ng_class="'active'" ng-click="nextSecondPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
+                                                <a class="bottomright" ng_show="secondWordsFiltered[$index].length !== 0" ng_class="'active'" ng-click="nextSecondPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
 
-                     
+
                                         </div>
-                                        <p align="center">{{wordsTitle[$index]}}<span ng-show='secondWordsAll[$index].length !== 0'> : words found {{secondWordsCount[$index]}} : Page {{getCurrentSecondPage($index)+1}} of {{numberOfSecondPages($index)}}</span></p>
+                                        <p  class="small"  id="secondPagination{{$index}}" align="center"> : {{wordsTitle[$index]}}<span ng-show='secondWordsAll[$index].length !== 0'> : words found {{secondWordsCount[$index]}} : Page {{getCurrentSecondPage($index) + 1}} of {{numberOfSecondPages($index)}}</span></p>
                                     </tab>
                                 </tabset>
                             </div>

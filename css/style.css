@@ -19,7 +19,7 @@ textarea {
     overflow: auto;
 }
 
-#firstPhrase {
+#firstPhrase, .firstFilter {
     color: #000000;
     background-color: #BCC3C3;
 }
@@ -33,7 +33,7 @@ textarea {
     overflow: auto;
 }
 
-#secondPhrase {
+#secondPhrase, .secondFilter {
     color: #000000;
     background-color: #C2BFD0;
 }
@@ -128,7 +128,11 @@ textarea {
 
 
 
-
+.match {
+    color: greenyellow;
+    font-size: xx-large;
+font-weight: bold;
+}
 
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], .ng-cloak, .x-ng-cloak {

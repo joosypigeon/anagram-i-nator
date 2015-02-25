@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeout) {
+app.factory('compare', ['anagramData', '$timeout', 'filterFilter', function (anagramData, $timeout, filterFilter) {
       var aphabetCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               aCharCode = 'a'.charCodeAt(0),
               alphabet = 'abcdefghijklmnopqrstuvwxyz',
@@ -149,17 +149,25 @@ app.factory('compare', ['anagramData', '$timeout', function (anagramData, $timeo
                } else {
                   timeStamp = time;
                   scope.firstWordsAll = wordsA;
+                  for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+                     scope['firstFilter'+i] = '';
+                     scope.firstWordsFiltered[i] = filterFilter(scope.firstWordsAll[i], scope['firstFilter'+i]);
+                     scope.firstWordsCount[i] = scope.firstWordsFiltered[i].length;
+                  }
+                  
                   scope.secondWordsAll = wordsB;
+                  for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+                     scope['secondFilter'+i] = '';
+                     scope.secondWordsFiltered[i] = filterFilter(scope.secondWordsAll[i], scope['secondFilter'+i]);
+                     scope.secondWordsCount[i] = scope.secondWordsFiltered[i].length;
+                  }
+                  
+                  
                }
 
                waiting = false;
 
-               scope.firstWordsAll.forEach(function (words, i) {
-                  scope.firstWordsCount[i] = words.length;
-               });
-               scope.secondWordsAll.forEach(function (words, i) {
-                  scope.secondWordsCount[i] = words.length;
-               });
+
 //console.log('updateWords:'+time+':waiting false');
 
                //reset paganation
