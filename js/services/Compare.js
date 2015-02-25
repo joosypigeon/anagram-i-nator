@@ -151,14 +151,14 @@ app.factory('compare', ['anagramData', '$timeout', 'filterFilter', function (ana
                   scope.firstWordsAll = wordsA;
                   for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
                      scope['firstFilter'+i] = '';
-                     scope.firstWordsFiltered[i] = filterFilter(scope.firstWordsAll[i], scope['firstFilter'+i]);
+                     scope.firstWordsFiltered[i] = filterFilter(scope.firstWordsAll[i], scope['firstFilter'+i]);// clearly I could have hust copied
                      scope.firstWordsCount[i] = scope.firstWordsFiltered[i].length;
                   }
                   
                   scope.secondWordsAll = wordsB;
                   for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
                      scope['secondFilter'+i] = '';
-                     scope.secondWordsFiltered[i] = filterFilter(scope.secondWordsAll[i], scope['secondFilter'+i]);
+                     scope.secondWordsFiltered[i] = filterFilter(scope.secondWordsAll[i], scope['secondFilter'+i]);// clearly I could have hust copied
                      scope.secondWordsCount[i] = scope.secondWordsFiltered[i].length;
                   }
                   

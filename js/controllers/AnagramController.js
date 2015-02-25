@@ -105,7 +105,8 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
       for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
          $scope.currentSecondPage.push(0);
       }
-      // HACK!
+      
+      // HACK for pagination
       $scope.pageSize = [100, 120, 90, 70, 60, 55, 50, 45, 40, 35, 30, 30, 30, 30];
 
 
@@ -160,15 +161,8 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
       }
 
 
-
+// check if we are done!
       $scope.match = function() {
-         console.log('---');
-         console.log('$scope.first:"'+$scope.first+'"');
-         console.log('$scope.first.length:"'+$scope.first.length+'"');
-         console.log('$scope.second.length:"'+$scope.second.length+'"');
-        console.log('$scope.firstUnmatched:"'+$scope.firstUnmatched+'"');
-        console.log('$scope.secondUnmatched:"'+$scope.secondUnmatched+'"');
-         console.log('---');
          return $scope.first != '' && $scope.first.length === $scope.second.length && $scope.firstUnmatched === '' && $scope.secondUnmatched === '';
       }
 
