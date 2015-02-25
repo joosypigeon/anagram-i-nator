@@ -1,0 +1,5 @@
+This is a one-page webapp for testing whether two phrases are anagrams and to provide some feed back if they are not.
+
+I want well know English language perfect pangrams such as "The quick brown fox jumps over the lazy dog." and “Mr. Jock, TV quiz PhD, bags few lynx.” to be passed as anagrams of the English alphabet “abcdefghijklmnopqrstuvwxyz”.
+
+So we will be using a subset the Basic Latin Unicode block consisting of the uppercase and lowercase latin alphabet, the Space, the Exclamation mark, the Apostrophe, the Comma, the Hyphen-minus and the Full stop. The comparison will be case-insensitive and we will ignore spaces and punctuation.
