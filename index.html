@@ -21,15 +21,16 @@
         <header class="container">
             <div class="jumbotron">
                 <h1>Anagram-i-nator</h1>
-                <p class="lead">Type and match letters to make pairs of anagram phrases, of upto 26 letters in length.</p>
-                <p>Punctuation and spaces are ignored.</p>
+                <h3>A tool to find and explore pairs of anagram phrases.</h3>
+                <p>Match letters to make pairs of anagram phrases, of upto 26 letters in length.</p>
+                <p><small>Punctuation is ignored.</small></p>
             </div>
         </header>
         <section id="body" class="container" ng-controller="AnagramController"> 
             <section class="col-md-6">
                 <div class="panel">
                     <div class="panel-heading">
-                        <h2 class="panel-title">Check for letters in the first phrase that are not matched in the second. Words made out of these unmatched letters are suggested.</h2>
+                        <h2 class="panel-title">Enter first phrase here and check the letters that are not match by the second phrase. Words made from the unmatched letters are given below. Click on them, to add them to the second phrase</h2>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -50,7 +51,7 @@
                             </div>
                         </div>
 
-                        <p align="center"><b>Words found in unmatched:</b></p>
+                        <p><b>Words found in unmatched letters from first phrase, by word length. Page and filter through them as required and click to add to second phrase:</b></p>
                         <div class="col-md-12">
                             <div class="wordControllers">
                                 <tabset>
@@ -87,8 +88,7 @@
             <section class="col-md-6">
                 <div class="panel">
                     <div class="panel-heading">
-                        <h2 class="panel-title">In this section enter your second phrase, check for unmatched letters and word suggestions for your first phrase</h2>
-                    </div>
+                        <h2 class="panel-title">Enter second phrase here and check the letters that are not match by the first phrase. Words made from the unmatched letters are given below. Click on them, to add them to the first phrase</h2>                    </div>
                     <div class="panel-body">
                         <div class="row">
                             <label for="secondPhrase" class="control-label col-md-6">Second Phrase  ({{secondCount}}/{{maxLetters}}):</label>
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p align="center"><b>Words found in unmatched:</b></p>
+                        <p><b>Words found in unmatched letters from second phrase, by word length. Page and filter through them as required and click to add to first phrase:</b></p>
                         <div class="col-md-12">
                             <div class="wordControllers">
                                 <tabset>

@@ -163,7 +163,18 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
 
 // check if we are done!
       $scope.match = function() {
-         return $scope.first != '' && $scope.first.length === $scope.second.length && $scope.firstUnmatched === '' && $scope.secondUnmatched === '';
+         return $scope.first !== '' && containsLetter($scope.first) && $scope.firstUnmatched === '' && $scope.secondUnmatched === '';
+         function containsLetter(s) {
+            var contains = false, c;
+            for(i = 0; i < s.length; i++){
+               c = s.charAt(i);
+               contains = contains || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'B');
+               if(contains){
+                  break;
+               }
+            }
+            return contains;
+         }
       }
 
 
