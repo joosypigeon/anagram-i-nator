@@ -83,21 +83,18 @@ app.factory('compare', ['wordData', '$timeout', 'filterFilter', function (wordDa
                   }
                }
             });
+            
             scope.firstUnmatched = firstUnmatched;
             scope.secondUnmatched = secondUnmatched;
          },
          updateWords: function updateWords(scope, firstOrSecond) {
             var unmatched = (firstOrSecond === 'first' ? firstUnmatched : secondUnmatched), i;
-//console.log('updateWords:start:firstOrSecond:'+firstOrSecond);
-//console.log('updateWords:waiting['+firstOrSecond+']:' + waiting[firstOrSecond] );
-//console.log('updateWords:pending['+firstOrSecond+']:' + pending[firstOrSecond] );
+
             if (!waiting[firstOrSecond]) {
                if (unmatched !== '') {
-//console.log('updateWords: setting waiting['+firstOrSecond+'] to true');
                   waiting[firstOrSecond] = true;
                   wordData.getWords(new Date().getTime(), unmatched, successCb, errorCb);
                } else {
-//console.log('updateWords:unmatched is empty')
                   scope[firstOrSecond+'Unmatched'] = '';
                   for(i = 0; i < app.MAX_WORD_LENGTH -1; i++) {
                   scope[firstOrSecond+'WordsAll'][i] = [];
@@ -105,19 +102,15 @@ app.factory('compare', ['wordData', '$timeout', 'filterFilter', function (wordDa
                }
                }
             } else if (!pending[firstOrSecond]) {
-//console.log('updateWords: setting pending['+firstOrSecond+'] to true');
                pending[firstOrSecond] = true;
                $timeout(function () {
-//console.log('$timeout: setting pending['+firstOrSecond+'] to false');
-
                   pending[firstOrSecond] = false;
                   updateWords(scope, firstOrSecond);
                }, 100);
             }
-//console.log('updateWords:end');
 
-            // inner functions bel
-            // callbacks for AnagramData
+            // inner functions bellow
+            // callbacks for wordData.getWords
             function successCb(time, data) {
                var a, words = data.words, i;
 
@@ -138,10 +131,7 @@ app.factory('compare', ['wordData', '$timeout', 'filterFilter', function (wordDa
                      scope[firstOrSecond + 'WordsFiltered'][i] = scope[firstOrSecond + 'WordsAll'][i].map(function(w){return w;});
                      scope[firstOrSecond + 'WordsCount'][i] = scope[firstOrSecond + 'WordsFiltered'][i].length;
                   }
-//console.log('successCb: setting waiting['+firstOrSecond+'] to false');
 
-
-                  
                   //reset paganation
                   for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
                      scope[firstOrSecond+'CurrentPage'][i] = 0;

@@ -175,19 +175,6 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
          }
       };
 
-
-      // update unmatched letters
-      $scope.updateUnmatched = function () {
-         compare.updateUnmatched($scope);
-      };
-      
-      //and ask server for words from unmatched letters
-      $scope.updateWords = function(firstOrSecond){
-         compare.updateWords($scope, firstOrSecond);
-      };
-
-
-
       //Add search controls
       angular.element(document).ready(function () {
          var markup;
@@ -223,6 +210,13 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
             })(i));
          }//end of for
       });
+      
+      // ng-change call for first and second phrase
+      // update unmatched letters
+      $scope.updateUnmatched = function () {
+         compare.updateUnmatched($scope);
+      };
+      
 
 
       // watch unmatched letters and update words made from them accordingliy
@@ -234,5 +228,8 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
         $scope.updateWords('second');
       });
       
-
+      //and ask server for words from unmatched letters
+      $scope.updateWords = function(firstOrSecond){
+         compare.updateWords($scope, firstOrSecond);
+      };
    }]);

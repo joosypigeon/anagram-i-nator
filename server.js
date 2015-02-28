@@ -23,7 +23,7 @@
                if (badLetters(letters)) {
                   res.status(400).json({status: 'bad request'});
                } else {
-                  words = getAnagrams(root, letters);
+                  words = getWords(root, letters);
  
                   res.status(200).json({status: 'good request', 'words': words});
                }
@@ -134,7 +134,7 @@
 
 
 
-   function getAnagrams(root, letters) {
+   function getWords(root, letters) {
       var currentIndex, currentNode, words, currentEdgeList, currentLetters,
               currentChildNodes, letter, letterIndex, indices = [], index = [], max = [],
               cumulative = [], alphebet = 'abcdefghijklmnopqrstuvwxyz',
