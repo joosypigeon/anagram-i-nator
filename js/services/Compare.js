@@ -1,187 +1,160 @@
 'use strict';
 
-app.factory('compare', ['anagramData', '$timeout', 'filterFilter', function (anagramData, $timeout, filterFilter) {
+app.factory('compare', ['wordData', '$timeout', 'filterFilter', function (wordData, $timeout, filterFilter) {
       var aphabetCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               aCharCode = 'a'.charCodeAt(0),
               alphabet = 'abcdefghijklmnopqrstuvwxyz',
               firstUnmatched = '',
               secondUnmatched = '',
-              firstUnmatchedWithSpaces = '',
-              secondUnmatchedWithSpaces = '',
               first, second,
-              waiting = false, pending = false, count;
+              waiting = {'first': false, 'second': false},
+      pending = {'first': false, 'second': false},
+      count, isLetter;
 
-      var timeStamp = new Date().getTime();
+      var timeStamp = {'first': new Date().getTime(), 'second': new Date().getTime()};
+
+      function strictLetterFilter(x, i) {
+         isLetter = 'a' <= x && x <= 'z';
+         if (isLetter) {
+            count++;
+         }
+         return isLetter && count <= app.MAX_LETTERS;
+      }
+
+      function lengthFilter(x) {
+         isLetter = ('a' <= x && x <= 'z') || ('A' <= x && x <= 'B');
+         if (isLetter) {
+            count++;
+         }
+         return !isLetter || (count <= app.MAX_LETTERS && isLetter);
+      }
 
       return {
-         update: function update(scope) {
-//console.log('update:start');
+         updateUnmatched: function (scope) {
             firstUnmatched = '';
             secondUnmatched = '';
-            firstUnmatchedWithSpaces = '';
-            secondUnmatchedWithSpaces = '';
 
-            findUnmatched();
-
-            if (!waiting) {
-//console.log('setting waiting true');
-               waiting = true;
-               anagramData.getAnagrams(new Date().getTime(), firstUnmatched, secondUnmatched, updateWords, errorCb);
-            } else if (!pending) {
-               pending = true;
-//console.log('setting pending true');
-               $timeout(function () {
-//console.log('interval firing: waiting and pending false');
-                  pending = false;
-                  update(scope);
-               }, 1000);
-            } else {
-               //console.log('both waiting and pending are true');
-            }
-//console.log('update:end');
-
-// INNER FUNCTIONS BELLOW
-
-            function findUnmatched() {
-               var count = 0, isLetter;
-
-               first = scope.first.toLowerCase().split('').filter(strictLetterFilter).join('');
-               if (count > app.MAX_LETTERS) {
-                  count = 0;
-                  scope.first = scope.first.split('').filter(lengthFilter).join('');
-                  count = app.MAX_LETTERS;
-               }
-               scope.firstCount = count;
-
+            count = 0;
+            first = scope.first.toLowerCase().split('').filter(strictLetterFilter).join('');
+            if (count > app.MAX_LETTERS) {
                count = 0;
-               second = scope.second.toLowerCase().split('').filter(strictLetterFilter).join('');
-               if (count > app.MAX_LETTERS) {
-                  count = 0;
-                  scope.second = scope.second.split('').filter(lengthFilter).join('');
-                  count = app.MAX_LETTERS;
-               }
-               scope.secondCount = count;
+               scope.first = scope.first.split('').filter(lengthFilter).join('');
+               count = app.MAX_LETTERS;
+            }
+            scope.firstCount = count;
+
+            count = 0;
+            second = scope.second.toLowerCase().split('').filter(strictLetterFilter).join('');
+            if (count > app.MAX_LETTERS) {
+               count = 0;
+               scope.second = scope.second.split('').filter(lengthFilter).join('');
+               count = app.MAX_LETTERS;
+            }
+            scope.secondCount = count;
 
 
-               for (var i = 0; i < 26; i++) {
-                  aphabetCount[i] = 0;
-               }
-
-               scope.first.toLowerCase().split('').filter(function (x) {
-                  return 'a' <= x && x <= 'z'
-               }).map(function (x) {
-                  return x.charCodeAt(0) - aCharCode
-               }).forEach(function (x) {
-                  aphabetCount[x] += 1;
-               });
-               scope.second.toLowerCase().split('').filter(function (x) {
-                  return 'a' <= x && x <= 'z'
-               }).map(function (x) {
-                  return x.charCodeAt(0) - aCharCode
-               }).forEach(function (x) {
-                  aphabetCount[x] -= 1;
-               });
-
-               aphabetCount.forEach(function (x, i) {
-                  while (x !== 0) {
-                     if (x > 0) {
-                        firstUnmatched += alphabet[i];
-                        firstUnmatchedWithSpaces += (alphabet[i] + ' ');
-                        x -= 1;
-                     } else if (x < 0) {
-                        secondUnmatched += alphabet[i];
-                        secondUnmatchedWithSpaces += (alphabet[i] + ' ');
-                        x += 1;
-                     }
-                  }
-               });
-
-               scope.firstUnmatched = firstUnmatchedWithSpaces;
-               scope.secondUnmatched = secondUnmatchedWithSpaces;
-
-               // inner functins bellow
-               function strictLetterFilter(x, i) {
-                  isLetter = 'a' <= x && x <= 'z';
-                  if (isLetter) {
-                     count++;
-                  }
-                  return isLetter && count <= app.MAX_LETTERS;
-               }
-               function lengthFilter(x) {
-                  isLetter = ('a' <= x && x <= 'z') || ('A' <= x && x <= 'B');
-                  if (isLetter) {
-                     count++;
-                  }
-                  return !isLetter || (count <= app.MAX_LETTERS && isLetter);
-               }
+            for (var i = 0; i < 26; i++) {
+               aphabetCount[i] = 0;
             }
 
+            scope.first.toLowerCase().split('').filter(function (x) {
+               return 'a' <= x && x <= 'z';
+            }).map(function (x) {
+               return x.charCodeAt(0) - aCharCode;
+            }).forEach(function (x) {
+               aphabetCount[x] += 1;
+            });
+            scope.second.toLowerCase().split('').filter(function (x) {
+               return 'a' <= x && x <= 'z';
+            }).map(function (x) {
+               return x.charCodeAt(0) - aCharCode;
+            }).forEach(function (x) {
+               aphabetCount[x] -= 1;
+            });
+
+            aphabetCount.forEach(function (x, i) {
+               while (x !== 0) {
+                  if (x > 0) {
+                     firstUnmatched += alphabet[i];
+                     x -= 1;
+                  } else if (x < 0) {
+                     secondUnmatched += alphabet[i];
+                     x += 1;
+                  }
+               }
+            });
+            scope.firstUnmatched = firstUnmatched;
+            scope.secondUnmatched = secondUnmatched;
+         },
+         updateWords: function updateWords(scope, firstOrSecond) {
+            var unmatched = (firstOrSecond === 'first' ? firstUnmatched : secondUnmatched), i;
+//console.log('updateWords:start:firstOrSecond:'+firstOrSecond);
+//console.log('updateWords:waiting['+firstOrSecond+']:' + waiting[firstOrSecond] );
+//console.log('updateWords:pending['+firstOrSecond+']:' + pending[firstOrSecond] );
+            if (!waiting[firstOrSecond]) {
+               if (unmatched !== '') {
+//console.log('updateWords: setting waiting['+firstOrSecond+'] to true');
+                  waiting[firstOrSecond] = true;
+                  wordData.getWords(new Date().getTime(), unmatched, successCb, errorCb);
+               } else {
+//console.log('updateWords:unmatched is empty')
+                  scope[firstOrSecond+'Unmatched'] = '';
+                  for(i = 0; i < app.MAX_WORD_LENGTH -1; i++) {
+                  scope[firstOrSecond+'WordsAll'][i] = [];
+                  scope[firstOrSecond+'WordsFiltered'][i] = [];
+               }
+               }
+            } else if (!pending[firstOrSecond]) {
+//console.log('updateWords: setting pending['+firstOrSecond+'] to true');
+               pending[firstOrSecond] = true;
+               $timeout(function () {
+//console.log('$timeout: setting pending['+firstOrSecond+'] to false');
+
+                  pending[firstOrSecond] = false;
+                  updateWords(scope, firstOrSecond);
+               }, 100);
+            }
+//console.log('updateWords:end');
+
+            // inner functions bel
             // callbacks for AnagramData
-            function updateWords(time, data) {
-               var a, wordsA = data.phraseA,
-                       wordsB = data.phraseB, i;
+            function successCb(time, data) {
+               var a, words = data.words, i;
 
-               if (wordsA[0].length === 0) {
-                  wordsA.shift();
+               if (words[0].length === 0) {
+                  words.shift();
                } else {
-                  a = wordsA[0].concat(wordsA[1]);
-                  wordsA.shift();
-                  wordsA.shift();
-                  wordsA.unshift(a);
+                  a = words[0].concat(words[1]);
+                  words.shift();
+                  words.shift();
+                  words.unshift(a);
                }
 
-               if (wordsB[0].length === 0) {
-                  wordsB.shift();
-               } else {
-                  a = wordsB[0].concat(wordsB[1]);
-                  wordsB.shift();
-                  wordsB.shift();
-                  wordsB.unshift(a);
-               }
-
-               //console.log(data.phraseA);
-               //console.log(wordsA);
-               //console.log('updateWords:timeStamp:' + timeStamp);
-               //console.log('updateWords:time:' + time);
-
-               if (timeStamp > time) {
-//console.log('timeStamp is after time!!! ');
-               } else {
-                  timeStamp = time;
-                  scope.firstWordsAll = wordsA;
+               if (timeStamp[firstOrSecond] < time) { // sanity check
+                  timeStamp[firstOrSecond] = time;
+                  scope[firstOrSecond + 'WordsAll'] = words;
                   for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
-                     scope['firstFilter'+i] = '';
-                     scope.firstWordsFiltered[i] = filterFilter(scope.firstWordsAll[i], scope['firstFilter'+i]);// clearly I could have hust copied
-                     scope.firstWordsCount[i] = scope.firstWordsFiltered[i].length;
+                     scope[firstOrSecond + 'Filter' + i] = '';
+                     scope[firstOrSecond + 'WordsFiltered'][i] = scope[firstOrSecond + 'WordsAll'][i].map(function(w){return w;});
+                     scope[firstOrSecond + 'WordsCount'][i] = scope[firstOrSecond + 'WordsFiltered'][i].length;
                   }
+//console.log('successCb: setting waiting['+firstOrSecond+'] to false');
+
+
                   
-                  scope.secondWordsAll = wordsB;
+                  //reset paganation
                   for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
-                     scope['secondFilter'+i] = '';
-                     scope.secondWordsFiltered[i] = filterFilter(scope.secondWordsAll[i], scope['secondFilter'+i]);// clearly I could have hust copied
-                     scope.secondWordsCount[i] = scope.secondWordsFiltered[i].length;
+                     scope[firstOrSecond+'CurrentPage'][i] = 0;
                   }
-                  
-                  
                }
-
-               waiting = false;
-
-
-//console.log('updateWords:'+time+':waiting false');
-
-               //reset paganation
-               for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
-                  scope.currentFirstPage[i] = 0;
-               }
-               for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
-                  scope.currentSecondPage[i] = 0;
-               }
+               
+               waiting[firstOrSecond] = false;
             }
+
             function errorCb() {
-//console.log('errorCb:waiting false');
-               waiting = false;
+               waiting[firstOrSecond] = false;
             }
          }
+
       };
    }]);

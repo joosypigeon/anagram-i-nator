@@ -36,21 +36,18 @@
                         <div class="row">
                             <label for="firstPhrase" class="control-label col-md-6">First Phrase ({{firstCount}}/{{maxLetters}}):</label>
                             <div class="col-md-6">
-                                <textarea id="firstPhrase" rows="2" cols="26" no-return maxlength="52" class="form-control" placeholder="Enter your first phrase here. Maximun number of letters 26." ng-model="first" ng-change="update()"></textarea>
+                                <textarea id="firstPhrase" rows="2" cols="26" no-return maxlength="52" class="form-control" placeholder="Enter your first phrase here. Maximun number of letters 26." ng-model="first" ng-change="updateUnmatched()"></textarea>
                             </div>
                         </div>
                         <div class="row">
                             <label for="firstUnmatched" class="control-label col-md-6">Unmatched letters in first phrase:</label>
                             <div class="col-md-6">
                                 <div id="firstUnmatched" class="well well-sm panel">
-                                    <p ng-show="!match()">{{firstUnmatched}}</p>
-
+                                    <p unmatched first-or-second="first" ng-show="!match()">{{firstUnmatchedWithSpaces}}</p>
                                     <p class="text-center match" ng-show="match()">MATCH!</p>
-
                                 </div>
                             </div>
                         </div>
-
                         <p><b>Words found in unmatched letters from first phrase, by word length. Page and filter through them as required and click to add to second phrase:</b></p>
                         <div class="col-md-12">
                             <div class="wordControllers">
@@ -72,7 +69,7 @@
 
                                             <a class="bottomleft" ng_show="numberOfFirstPages($index) > 1" ng_class="'active'" ng-click="previousFirstPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="numberOfFirstPages($index) > 1">
 
-                                                <a class="bottomright" ng_show="firstWordsFiltered[$index].length !== 0" ng_class="'active'" ng-click="nextFirstPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
+                                                <a class="bottomright" ng_show="numberOfFirstPages($index) > 1" ng_class="'active'" ng-click="nextFirstPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
 
 
                                         </div>
@@ -93,14 +90,14 @@
                         <div class="row">
                             <label for="secondPhrase" class="control-label col-md-6">Second Phrase  ({{secondCount}}/{{maxLetters}}):</label>
                             <div class="col-md-6">
-                                <textarea id="secondPhrase" rows="2" cols="26" no-return maxlength="52" class="form-control" placeholder="Enter your second phrase here. Maximun number of letters 26." ng-model="second" ng-change="update()"></textarea>
+                                <textarea id="secondPhrase" rows="2" cols="26" no-return maxlength="52" class="form-control" placeholder="Enter your second phrase here. Maximun number of letters 26." ng-model="second" ng-change="updateUnmatched()"></textarea>
                             </div>
                         </div>
                         <div class="row">
                             <label for="secondUnmatched" class="control-label col-md-6">Unmatched letters in second phrase:</label>
                             <div class="col-md-6">
                                 <div id="secondUnmatched" class="well well-sm panel">
-                                    <p ng-show="!match()">{{secondUnmatched}}</p>
+                                    <p unmatched first-or-second="second" ng-show="!match()" />{{secondUnmatchedWithSpaces}}</p>
                                     <div  ng-show="match()" class="match" >
                                         <p class="text-center match" ng-show="match()">MATCH!</p>
                                     </div>
@@ -126,13 +123,14 @@
                                                 <li ng-repeat="word in words| orderBy | startFrom: getCurrentSecondPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
 
-                                            <a class="bottomleft" ng_show="secondWordsFiltered[$index].length !== 0" ng_class="'active'" ng-click="previousSecondPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="secondWordsFiltered[$index].length !== 0">
+                                            <a class="bottomleft" ng_show="numberOfSecondPages($index) > 1" ng_class="'active'" ng-click="previousSecondPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="secondWordsFiltered[$index].length !== 0">
 
-                                                <a class="bottomright" ng_show="secondWordsFiltered[$index].length !== 0" ng_class="'active'" ng-click="nextSecondPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
+                                                <a class="bottomright" ng_show="numberOfSecondPages($index) > 1" ng_class="'active'" ng-click="nextSecondPage($index)" > Next Page <i class="fa fa-arrow-circle-right"></i></a>
 
 
                                         </div>
                                         <p  class="small"  id="secondPagination{{$index}}" align="center"> : {{wordsTitle[$index]}}<span ng-show='secondWordsAll[$index].length !== 0'> : words found {{secondWordsCount[$index]}} : Page {{getCurrentSecondPage($index) + 1}} of {{numberOfSecondPages($index)}}</span></p>
+
                                     </tab>
                                 </tabset>
                             </div>
@@ -156,11 +154,11 @@
         <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
         <script src="js/app.js"></script>
         <script src="js/controllers/AnagramController.js"></script>
-        <script src="js/controllers/OutterController.js"></script>
         <script src="js/services/Compare.js"></script>
-        <script src="js/services/AnagramData.js"></script>
+        <script src="js/services/WordData.js"></script>
         <script src="js/services/StartFrom.js"></script>
         <script src="js/directives/NoReturn.js"></script>
         <script src="js/directives/ClickThrough.js"></script>
+        <script src="js/directives/Unmatched.js"></script>
     </body>
 </html>

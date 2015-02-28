@@ -1,15 +1,14 @@
 'use strict';
 
-app.factory('anagramData', function ($http) {
+app.factory('wordData', function ($http) {
    return {
-      getAnagrams: function (time, phraseA, phraseB, successCb, errorCb) {
-         $http({method: 'GET', url: '/data/' + phraseA + '-' + phraseB})
+      getWords: function(time, letters, successCb, errorCb){
+         $http({method: 'GET', url: '/data/' + letters})
                  .success(function (data, status, headers, config) {
                     successCb(time, data);
                  }).error(function (data, status, headers, config) {
-            errorCb();
+                     errorCb();
          });
       }
    };
 });
-

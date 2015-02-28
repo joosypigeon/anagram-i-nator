@@ -19,35 +19,14 @@
                     app = express();
 
             app.use('/data/:letters', function (req, res) {
-               console.log('----------------');
-               var letters = req.params.letters,
-                       index = letters.indexOf('-'),
-                       anagramsA, anagramsB, lettersA, lettersB;
-               console.log('letters:' + letters)
-               console.log('index:' + index);
-               if (index === 0) {
-                  lettersA = '';
-                  lettersB = letters.slice(1);
-               } else if (index === letters.length - 1) {
-                  lettersA = letters.slice(0, index);
-                  lettersB = '';
-               } else {
-                  lettersA = letters.slice(0, index);
-                  lettersB = letters.slice(index + 1, letters.length - 1)
-               }
-
-               console.log('lettersA:"' + lettersA + '"');
-               console.log('lettersB:"' + lettersB + '"');
-
-               if (index === -1 || badLetters(lettersA) || badLetters(lettersB)) {
+               var letters = req.params.letters, words;
+               if (badLetters(letters)) {
                   res.status(400).json({status: 'bad request'});
                } else {
-                  anagramsA = getAnagrams(root, lettersA);
-                  anagramsB = getAnagrams(root, lettersB);
-
-                  res.status(200).json({status: 'good request', phraseA: anagramsA, phraseB: anagramsB});
+                  words = getAnagrams(root, letters);
+ 
+                  res.status(200).json({status: 'good request', 'words': words});
                }
-               console.log('Data returned.');
                res.end();
             });
 
@@ -76,6 +55,12 @@
    //inner function below
    ///////////////////////
 
+   function sleep(miliseconds) {
+      var currentTime = new Date().getTime();
+
+      while (currentTime + miliseconds >= new Date().getTime()) {
+      }
+   }
 
    function catchToString(err) {
       var errInfo = "Error:\n";
@@ -124,8 +109,6 @@
             if (i === length - 1) {
                // currentNode is now updated to what x points to
                // x is the last letter than store word in anagram array of currentNode
-               //console.log('last letter of key');
-               //console.log('setting anagram array:'+words);
                currentNode[0] = words;
             }
             //console.log('---');
@@ -142,7 +125,7 @@
          bad = true;
       } else if (letters.length > 0) {
          letters.split('').map(function (x) {
-            bad = bad || (x < 'a' && 'z' < x)
+            bad = bad || (x < 'a' && 'z' < x);
          });
       }
 
@@ -172,7 +155,7 @@
       //console.log(aphabetCount.join(''));
 
       letters.toLowerCase().split('').map(function (x) {
-         return x.charCodeAt(0) - aCharCode
+         return x.charCodeAt(0) - aCharCode;
       }).forEach(function (x) {
          aphabetCount[x] += 1;
       });//get the signature of LETTERS
