@@ -19,11 +19,19 @@
     </head>
     <body ng-cloak>
         <header class="container">
-            <div class="jumbotron">
-                <h1>Anagram-i-nator</h1>
-                <h3>A tool to find and explore pairs of anagram phrases.</h3>
-                <p>Match letters to make pairs of anagram phrases, of upto 26 letters in length.</p>
-                <p><small>Punctuation is ignored.</small></p>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span><h3 class="panel-title">Anagram-i-nator</h3>
+                </div>
+                <div  id="jumbo" class="panel-body collapse in">
+
+
+                    <h1>Anagram-i-nator</h1>
+                    <h3>A tool to find and explore pairs of anagram phrases.</h3>
+                    <h4><small>Match letters to make pairs of anagram phrases, of upto 26 letters in length.</small></h4>
+                    <h4><small>Punctuation is ignored.</small></h4>
+
+                </div>
             </div>
         </header>
         <section id="body" class="container" ng-controller="AnagramController"> 
@@ -64,7 +72,7 @@
                                         <div class="fixedheight firstWords well well-sm panel">
 
                                             <ul first-click-through class="list-unstyled">
-                                                <li ng-repeat="word in words| orderBy | startFrom: getCurrentFirstPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
+                                                <li ng-repeat="word in words | orderBy | startFrom: getCurrentFirstPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
 
                                             <a class="bottomleft" ng_show="numberOfFirstPages($index) > 1" ng_class="'active'" ng-click="previousFirstPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="numberOfFirstPages($index) > 1">
@@ -120,7 +128,7 @@
                                         <div class="fixedheight secondWords well well-sm panel">
 
                                             <ul second-click-through class="list-unstyled">
-                                                <li ng-repeat="word in words| orderBy | startFrom: getCurrentSecondPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
+                                                <li ng-repeat="word in words | orderBy | startFrom: getCurrentSecondPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
 
                                             <a class="bottomleft" ng_show="numberOfSecondPages($index) > 1" ng_class="'active'" ng-click="previousSecondPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="secondWordsFiltered[$index].length !== 0">
@@ -148,7 +156,7 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-sanitize.js"></script>
         <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
@@ -160,5 +168,6 @@
         <script src="js/directives/NoReturn.js"></script>
         <script src="js/directives/ClickThrough.js"></script>
         <script src="js/directives/Unmatched.js"></script>
+        <script src="js/Site.js"></script>
     </body>
 </html>

@@ -85,25 +85,20 @@
          if (lc % 10000 === 0) {
             console.log(lc);
          }
-         //console.log('line:'+line);
          words = line.split(/[\s]+/);
          word = words.shift();
-         //console.log('word:'+word);
          length = word.length;
          currentNode = root;
          word.split('').forEach(function (x, i) {
-            //console.log('letter:'+x);
             currentEdgeList = currentNode[1];
             currentLetters = currentEdgeList[0];
             currentChildNodes = currentEdgeList[1];
             currentIndex = currentLetters.indexOf(x);
             if (currentIndex === -1) {
-               //console.log('letter edge not found from this node');
                currentNode = [null, [[], []]];
                currentLetters.push(x);
                currentChildNodes.push(currentNode);
             } else {
-               //console.log('found letter edge');
                currentNode = currentChildNodes[currentIndex];
             }
             if (i === length - 1) {
@@ -111,7 +106,6 @@
                // x is the last letter than store word in anagram array of currentNode
                currentNode[0] = words;
             }
-            //console.log('---');
          });// end of word.split('').forEach
       });// end of lines.forEach
       console.log(lc);
@@ -152,7 +146,6 @@
          aphabetCount[i] = 0;
       }
 
-      //console.log(aphabetCount.join(''));
 
       letters.toLowerCase().split('').map(function (x) {
          return x.charCodeAt(0) - aCharCode;
@@ -160,8 +153,6 @@
          aphabetCount[x] += 1;
       });//get the signature of LETTERS
 
-      //console.log(aphabetCount.join(''));
-      //console.log('abcdefghijklmnopqrstuvwxyz');
 
       aphabetCount.forEach(function (x, i) {
          if (x) {
@@ -169,33 +160,20 @@
          }
       });// record the non-zero signature elements of LETTERS
 
-      //console.log('indices:'+indices);
-
       indices.forEach(function (i) {
          cumulative.push(0);
          index.push(0);
          max.push(aphabetCount[i] + 1);
       }); // create loop varaiable with max values
 
-      //console.log('max:'+max);
 
       currentIndex = 0;
       numberIndices = indices.length;
 
-      //console.log('root[0]:'+root[0]);
-      //console.log('root[1][0]:'+root[1][0]);
-      //console.log('root[1][1]:'+root[1][1]);
-
       // iterate over power set
-
       currentNode = root;
       nodes.push(currentNode);
       while (index[0] < max[0]) {
-//console.log('currentIndex:'+currentIndex);
-//console.log('index:'+index);
-//console.log('cumulative:'+cumulative);
-
-
          if (index[currentIndex] < max[currentIndex] && cumulative[currentIndex] < MAX_WORD_LENGTH + 1) {
             if (0 < index[currentIndex]) {
 
@@ -203,13 +181,10 @@
                currentEdgeList = currentNode[1];
                currentLetters = currentEdgeList[0];
                letter = alphebet[indices[currentIndex]];
-//console.log(' adding another letter:'+letter);
                letterIndex = currentLetters.indexOf(letter);
                if (letterIndex === -1) {
-//console.log('no edge found');
                   // This prefix does not exist in anagram dictionary trie.
                   // abandon loop
-//console.log('stepping out to outter loop');
                   // step out to outter loop
                   if (currentIndex === 0) {
                      break;
@@ -228,36 +203,22 @@
             }
 
             if (currentIndex === numberIndices - 1) {
-//console.log('innermost loop');
                // increment innermost loop
 
                words = currentNode[0];
                if (words) {
-//console.log('words:' + words);
-//console.log('words.length:' + words.length);
-//console.log(found);
-//console.log('found.length:'+found.length);
-//console.log(cumulative[currentIndex]);
-//console.log(found[cumulative[currentIndex] - 1]);
-//console.log('hello a');
                   found[cumulative[currentIndex] - 1] = found[cumulative[currentIndex] - 1].concat(words);
-//console.log('hello b');
-//console.log(found[cumulative[currentIndex] - 1]);
-//console.log('hello c');
                }
                // increment inner most loop
-//console.log('increment inner most loop');
                index[numberIndices - 1] += 1;
                cumulative[numberIndices - 1] += 1;
             } else {
-//console.log('stepping into next inner loop');
                // step into next inner loop
                currentIndex += 1;
                cumulative[currentIndex] = cumulative[currentIndex - 1];
                nodes[currentIndex] = nodes[currentIndex - 1];
             }
          } else if (currentIndex !== 0) {
-//console.log('stepping out to outter loop');
             // step out to outter loop
             index[currentIndex] = 0;
             cumulative[currentIndex] = 0;
@@ -266,7 +227,6 @@
             cumulative[currentIndex] += 1;
          }
       }
-//      console.log(found);
       return found;
    }
 
