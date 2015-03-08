@@ -10,6 +10,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.2/cyborg/bootstrap.css" rel="stylesheet">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <link href="css/style.css" rel="stylesheet">
+        <link href="css/responsive.css" rel="stylesheet">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -24,13 +25,13 @@
                     <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span><h3 class="panel-title">Anagram-i-nator</h3>
                 </div>
                 <div  id="jumbo" class="panel-body collapse in">
-
-
-                    <h1>Anagram-i-nator</h1>
-                    <h3>A tool to find and explore pairs of anagram phrases.</h3>
-                    <h4><small>Match letters to make pairs of anagram phrases, of upto 26 letters in length.</small></h4>
-                    <h4><small>Punctuation is ignored.</small></h4>
-
+                    <h1 class='textxxLarge'>Anagram-i-nator</h1>
+                    <h3 class='textLarge'>A tool to help you find pairs of anagram phrases</h3>
+                    <h4 class='textxxMedium'>For instance enter <span class='firstExample'>I am a weakish speller</span> in the <span class="bold">first phrase</span> box below left and <span class='secondExample'>William Shakespeare</span> in the <span class="bold">second phrase</span> box below right, to achieve a <span class='matchExample'>MATCH!</span> showing that these phrases are anagrams of each other.</h4>
+                    <h4 class='textxMedium'>Beneath each phrase box is an <span class='font-bold'>unmatched letters</span> box. An <span class='font-bold'>unmatched letters</span> box contains the letters from the phrase above it that are not currently matched by the other phrase. When <span class='matchExample'>MATCH!</span> is displayed in both <span class='font-bold'>unmatched letters</span> boxes, the first and second phrases are anagrams of each other.</h4>
+                    <h4 class='textxMedium'>Below each <span class='font-bold'>unmatched letters</span> box is displayed all the words that the system can make from those <span class='font-bold'>unmatched letters</span>. The words are paged by word length and for a given word length can be filter with a search field found underneath the words.</h4>
+                    <h4 class='textxMedium'>When you click on a word made from the <span class='font-bold'>unmatched letters</span> of the <span class="bold">first phrase</span>, it will be added to the <span class="bold">second phrase</span> (and vise versa) while keeping the letter count in the phrase at no greater than 26.</h4>
+                    <h5 class='textMedium'>NOTE: Each phrases cannot exceed 26 letters in length. Punctuation is ignored.</h5>
                 </div>
             </div>
         </header>
@@ -38,7 +39,7 @@
             <section class="col-md-6">
                 <div class="panel">
                     <div class="panel-heading">
-                        <h2 class="panel-title">Enter first phrase here and check the letters that are not match by the second phrase. Words made from the unmatched letters are given below. Click on them, to add them to the second phrase</h2>
+                        <h2 class="panel-title phraseTitle"> - FIRST - </h2>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -56,7 +57,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p><b>Words found in unmatched letters from first phrase, by word length. Page and filter through them as required and click to add to second phrase:</b></p>
+                        <p><b>Below are words found in unmatched letters from first phrase.<br/>Page and filter through them as required and click to add to second phrase:</b></p>
                         <div class="col-md-12">
                             <div class="wordControllers">
                                 <tabset>
@@ -72,7 +73,7 @@
                                         <div class="fixedheight firstWords well well-sm panel">
 
                                             <ul first-click-through class="list-unstyled">
-                                                <li ng-repeat="word in words | orderBy | startFrom: getCurrentFirstPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
+                                                <li ng-repeat="word in words| orderBy | startFrom: getCurrentFirstPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
 
                                             <a class="bottomleft" ng_show="numberOfFirstPages($index) > 1" ng_class="'active'" ng-click="previousFirstPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="numberOfFirstPages($index) > 1">
@@ -92,8 +93,9 @@
             </section>
             <section class="col-md-6">
                 <div class="panel">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">Enter second phrase here and check the letters that are not match by the first phrase. Words made from the unmatched letters are given below. Click on them, to add them to the first phrase</h2>                    </div>
+                    <div class="panel-heading phraseTitle">
+                        <h2 class="panel-title"> - SECOND - </h2>
+                    </div>
                     <div class="panel-body">
                         <div class="row">
                             <label for="secondPhrase" class="control-label col-md-6">Second Phrase  ({{secondCount}}/{{maxLetters}}):</label>
@@ -112,7 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p><b>Words found in unmatched letters from second phrase, by word length. Page and filter through them as required and click to add to first phrase:</b></p>
+                        <p><b>Below are words found in unmatched letters from second phrase.<br/>Page and filter through them as required and click to add to first phrase:</b></p>
                         <div class="col-md-12">
                             <div class="wordControllers">
                                 <tabset>
@@ -128,7 +130,7 @@
                                         <div class="fixedheight secondWords well well-sm panel">
 
                                             <ul second-click-through class="list-unstyled">
-                                                <li ng-repeat="word in words | orderBy | startFrom: getCurrentSecondPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
+                                                <li ng-repeat="word in words| orderBy | startFrom: getCurrentSecondPage($index) * pageSize[$index] | limitTo: pageSize[$index]">{{word}}</li>
                                             </ul>
 
                                             <a class="bottomleft" ng_show="numberOfSecondPages($index) > 1" ng_class="'active'" ng-click="previousSecondPage($index)"><i class="fa fa-arrow-circle-left"></i> Previous Page</a><p ng_class="'active'"  class="paganationInfo" ng_show="secondWordsFiltered[$index].length !== 0">
@@ -154,12 +156,18 @@
         </footer>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-sanitize.js"></script>
-        <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
+        <!--- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.js"></script>
+         <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>--->
+
+        <script src="js/lib/jquery.min.js"></script>
+        <script src="js/lib/bootstrap.min.js"></script>
+        <script src="js/lib/angular.js"></script>
+        <script src="js/lib/ui-bootstrap-tpls-0.12.1.js"></script>
+
+
+
         <script src="js/app.js"></script>
         <script src="js/controllers/AnagramController.js"></script>
         <script src="js/services/Compare.js"></script>

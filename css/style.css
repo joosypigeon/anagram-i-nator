@@ -24,6 +24,11 @@ textarea {
     background-color: #BCC3C3;
 }
 
+.firstExample {
+    font-weight: bold;
+    color: #BCC3C3;
+}
+
 .secondWords, #secondUnmatched {
     background-color: #16122A;
 }
@@ -36,6 +41,11 @@ textarea {
 #secondPhrase, .secondFilter {
     color: #000000;
     background-color: #C2BFD0;
+}
+
+.secondExample {
+    font-weight: bold;
+    color: #C2BFD0;
 }
 
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
@@ -126,14 +136,23 @@ textarea {
     cursor: pointer;
 }
 
-
+.matchExample {
+    color: greenyellow;
+    font-weight: bold;   
+}
 
 .match {
     color: greenyellow;
     font-size: xx-large;
-font-weight: bold;
+    font-weight: bold;
 }
 
+.bold {
+    font-weight: bold;
+}
+.phraseTitle{
+    text-align: center;
+}
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none;
