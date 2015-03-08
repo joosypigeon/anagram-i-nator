@@ -267,3 +267,9 @@
 .text-underline {		
     text-decoration: underline;	
 }
+
+/* justification */
+
+.text-center{
+    text-align: center;
+}

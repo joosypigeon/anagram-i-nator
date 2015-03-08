@@ -147,13 +147,6 @@ textarea {
     font-weight: bold;
 }
 
-.bold {
-    font-weight: bold;
-}
-.phraseTitle{
-    text-align: center;
-}
-
 [ng\:cloak], [ng-cloak], [data-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none;
 }
