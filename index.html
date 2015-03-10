@@ -82,7 +82,7 @@
 
 
                                         </div>
-                                        <p class="small" id="firstPagination{{$index}}" align="center"> : {{wordsTitle[$index]}}<span ng-show='firstWordsAll[$index].length !== 0'> : words found {{firstWordsCount[$index]}} : Page {{getCurrentFirstPage($index) + 1}} of {{numberOfFirstPages($index)}}</span></p>
+                                        <p class="small" align="center"><input class='input-sm firstFilter' placeholder='filter . . .' type='text' maxlength='15' size='15' ng-model='firstFilterArray[$index]' /> : {{wordsTitle[$index]}}<span ng-show='firstWordsAll[$index].length !== 0'> : words found {{firstWordsCount[$index]}} : Page {{getCurrentFirstPage($index) + 1}} of {{numberOfFirstPages($index)}}</span></p>
 
                                     </tab>
                                 </tabset>
@@ -139,7 +139,7 @@
 
 
                                         </div>
-                                        <p  class="small"  id="secondPagination{{$index}}" align="center"> : {{wordsTitle[$index]}}<span ng-show='secondWordsAll[$index].length !== 0'> : words found {{secondWordsCount[$index]}} : Page {{getCurrentSecondPage($index) + 1}} of {{numberOfSecondPages($index)}}</span></p>
+                                        <p  class="small"  id="secondPagination{{$index}}" align="center"><input class='input-sm secondFilter' placeholder='filter . . .' type='text' maxlength='15' size='15' ng-model='secondFilterArray[$index]' /> : {{wordsTitle[$index]}}<span ng-show='secondWordsAll[$index].length !== 0'> : words found {{secondWordsCount[$index]}} : Page {{getCurrentSecondPage($index) + 1}} of {{numberOfSecondPages($index)}}</span></p>
 
                                     </tab>
                                 </tabset>
