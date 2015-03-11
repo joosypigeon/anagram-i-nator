@@ -169,8 +169,6 @@ app.controller('AnagramController', ['$scope', 'filterFilter', 'compare', 'MAX_W
         return $scope.first !== '' && containsLetter($scope.first) && $scope.firstUnmatched === '' && $scope.secondUnmatched === '';
     };
 
-
-    // avoid obvious clourse bug
     // Filter suggested words
     function filterCB(firstOrSecond, i) {
         return function (newTerm, oldTerm) {
