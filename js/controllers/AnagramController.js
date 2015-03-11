@@ -1,12 +1,12 @@
 'use strict';
 
-app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'compare', function($scope, $compile, filterFilter, compare) {
+app.controller('AnagramController', ['$scope', 'filterFilter', 'compare', 'MAX_WORD_LENGTH', 'MAX_LETTERS', function ($scope, filterFilter, compare, MAX_WORD_LENGTH, MAX_LETTERS) {
     var i, a, b, c, firstActive = 0,
         secondActive = 0;
     $('#firstUnmatched').height(60);
     $('#secondUnmatched').height(60);
 
-    $scope.maxWordLength = app.MAX_WORD_LENGTH;
+    $scope.maxWordLength = MAX_WORD_LENGTH;
 
     $scope.wordsTitle = ['words of length 1 and 2', 'words of length 3', 'words of length 4', 'words of length 5', 'words of length 6', 'words of length 7', 'words of length 8', 'words of length 9', 'words of length 10', 'words of length 11', 'words of length 12', 'words of length 13', 'words of length 14', 'words of length 15'];
 
@@ -17,9 +17,9 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
     a = [];
     b = [];
     c = [];
-    for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+    for (i = 0; i < MAX_WORD_LENGTH - 1; i += 1) {
         a.push([]);
-        b.push[0];
+        b.push(0);
         c.push('');
     }
     $scope.firstWordsAll = a;
@@ -33,7 +33,7 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
     a = [];
     b = [];
     c = [];
-    for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+    for (i = 0; i < MAX_WORD_LENGTH - 1; i += 1) {
         a.push([]);
         b.push(0);
         c.push('');
@@ -48,7 +48,7 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
 
     $scope.firstCount = 0;
     $scope.secondCount = 0;
-    $scope.maxLetters = app.MAX_LETTERS;
+    $scope.maxLetters = MAX_LETTERS;
 
     $scope.setFirst = function (str) {
         $scope.first = str;
@@ -79,26 +79,26 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
     };
 
     $scope.firstForward = function () {
-        firstActive = (firstActive + 1) % (app.MAX_WORD_LENGTH - 1);
+        firstActive = (firstActive + 1) % (MAX_WORD_LENGTH - 1);
     };
     $scope.firstBack = function () {
-        firstActive = (firstActive + app.MAX_WORD_LENGTH - 2) % (app.MAX_WORD_LENGTH - 1);
+        firstActive = (firstActive + MAX_WORD_LENGTH - 2) % (MAX_WORD_LENGTH - 1);
     };
 
     $scope.secondForward = function () {
-        secondActive = (secondActive + 1) % (app.MAX_WORD_LENGTH - 1);
+        secondActive = (secondActive + 1) % (MAX_WORD_LENGTH - 1);
     };
     $scope.secondBack = function () {
-        secondActive = (secondActive + app.MAX_WORD_LENGTH - 2) % (app.MAX_WORD_LENGTH - 1);
+        secondActive = (secondActive + MAX_WORD_LENGTH - 2) % (MAX_WORD_LENGTH - 1);
     };
 
     // Pagination
     $scope.firstCurrentPage = [];
-    for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+    for (i = 0; i < MAX_WORD_LENGTH - 1; i += 1) {
         $scope.firstCurrentPage.push(0);
     }
     $scope.secondCurrentPage = [];
-    for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
+    for (i = 0; i < MAX_WORD_LENGTH - 1; i += 1) {
         $scope.secondCurrentPage.push(0);
     }
 
@@ -109,110 +109,103 @@ app.controller('AnagramController', ['$scope', '$compile', 'filterFilter', 'comp
 
 
 
-    $scope.setCurrentFirstPage = function(index, currentPage) {
+    $scope.setCurrentFirstPage = function (index, currentPage) {
         $scope.firstCurrentPage[index] = currentPage;
     };
-    $scope.getCurrentFirstPage = function(index) {
+    $scope.getCurrentFirstPage = function (index) {
         return $scope.firstCurrentPage[index];
     };
 
 
-    $scope.numberOfFirstPages = function(index) {
+    $scope.numberOfFirstPages = function (index) {
         return Math.ceil($scope.firstWordsFiltered[index].length / $scope.pageSize[index]);
     };
 
-    $scope.previousFirstPage = function(index) {
+    $scope.previousFirstPage = function (index) {
         $scope.firstCurrentPage[index] = ($scope.firstCurrentPage[index] + $scope.numberOfFirstPages(index) - 1) % $scope.numberOfFirstPages(index);
     };
 
-    $scope.nextFirstPage = function(index) {
+    $scope.nextFirstPage = function (index) {
         $scope.firstCurrentPage[index] = ($scope.firstCurrentPage[index] + 1) % $scope.numberOfFirstPages(index);
     };
 
 
-    $scope.setCurrentSecondPage = function(index, currentPage) {
+    $scope.setCurrentSecondPage = function (index, currentPage) {
         $scope.secondCurrentPage[index] = currentPage;
     };
-    $scope.getCurrentSecondPage = function(index) {
+    $scope.getCurrentSecondPage = function (index) {
         return $scope.secondCurrentPage[index];
     };
 
 
-    $scope.numberOfSecondPages = function(index) {
+    $scope.numberOfSecondPages = function (index) {
         return Math.ceil($scope.secondWordsFiltered[index].length / $scope.pageSize[index]);
     };
 
-    $scope.previousSecondPage = function(index) {
+    $scope.previousSecondPage = function (index) {
         $scope.secondCurrentPage[index] = ($scope.secondCurrentPage[index] + $scope.numberOfSecondPages(index) - 1) % $scope.numberOfSecondPages(index);
     };
 
-    $scope.nextSecondPage = function(index) {
+    $scope.nextSecondPage = function (index) {
         $scope.secondCurrentPage[index] = ($scope.secondCurrentPage[index] + 1) % $scope.numberOfSecondPages(index);
     };
 
 
     // check if we are done!
     $scope.match = function () {
-        return $scope.first !== '' && containsLetter($scope.first) && $scope.firstUnmatched === '' && $scope.secondUnmatched === '';
-
         function containsLetter(s) {
             var contains = false,
-                c;
-            for (i = 0; i < s.length; i++) {
-                c = s.charAt(i);
-                contains = contains || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'B');
+                char;
+            for (i = 0; i < s.length; i += 1) {
+                char = s.charAt(i);
+                contains = contains || ('a' <= char && char <= 'z') || ('A' <= char && char <= 'B');
                 if (contains) {
                     break;
                 }
             }
             return contains;
         }
+
+        return $scope.first !== '' && containsLetter($scope.first) && $scope.firstUnmatched === '' && $scope.secondUnmatched === '';
     };
 
 
     // avoid obvious clourse bug
     // Filter suggested words
-    for (i = 0; i < app.MAX_WORD_LENGTH - 1; i++) {
-        $scope.$watch('firstFilterArray['+i+']', (function (i) {
-            return function(newTerm, oldTerm) {
-                if (newTerm !== oldTerm) {
-                    $scope.firstWordsFiltered[i] = filterFilter($scope.firstWordsAll[i], newTerm);
-                    $scope.firstWordsCount[i] = $scope.firstWordsFiltered[i].length;
-                    $scope.firstCurrentPage[i] = 0;
-                }
-            };
-        })(i));
-        $scope.$watch('secondFilterArray['+i+']', (function (i) {
-            return function(newTerm, oldTerm) {
-                if (newTerm !== oldTerm) {
-                    $scope.secondWordsFiltered[i] = filterFilter($scope.secondWordsAll[i], newTerm);
-                    $scope.secondWordsCount[i] = $scope.secondWordsFiltered[i].length;
-                    $scope.secondCurrentPage[i] = 0;
-                }
-            };
-        })(i));
+    function filterCB(firstOrSecond, i) {
+        return function (newTerm, oldTerm) {
+            if (newTerm !== oldTerm) {
+                $scope[firstOrSecond + 'WordsFiltered'][i] = filterFilter($scope[firstOrSecond + 'WordsAll'][i], newTerm);
+                $scope[firstOrSecond + 'WordsCount'][i] = $scope[firstOrSecond + 'WordsFiltered'][i].length;
+                $scope[firstOrSecond + 'CurrentPage'][i] = 0;
+            }
+        };
+    }
+    for (i = 0; i < MAX_WORD_LENGTH - 1; i += 1) {
+        $scope.$watch('firstFilterArray[' + i + ']', filterCB('first', i));
+        $scope.$watch('secondFilterArray[' + i + ']', filterCB('second', i));
     } //end of for
 
 
     // ng-change call for first and second phrase
     // update unmatched letters
-    $scope.updateUnmatched = function() {
+    $scope.updateUnmatched = function () {
         compare.updateUnmatched($scope);
     };
 
 
 
     // watch unmatched letters and update words made from them accordingliy
-    $scope.$watch('firstUnmatched', function() {
+    $scope.$watch('firstUnmatched', function () {
         $scope.updateWords('first');
     });
 
-    $scope.$watch('secondUnmatched', function() {
+    $scope.$watch('secondUnmatched', function () {
         $scope.updateWords('second');
     });
 
     //and ask server for words from unmatched letters
-    $scope.updateWords = function(firstOrSecond) {
+    $scope.updateWords = function (firstOrSecond) {
         compare.updateWords($scope, firstOrSecond);
     };
 }]);
